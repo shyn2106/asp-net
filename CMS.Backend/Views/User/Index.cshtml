@@ -1,0 +1,253 @@
+﻿@model IEnumerable<CMS.Data.Entities.User>
+
+@{
+    ViewData["Title"] = "Quản lý người dùng";
+}
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<div class="container mt-5">
+
+    <div class="user-management-card shadow-lg border-0">
+
+        <!-- HEADER -->
+        <div class="card-header-custom">
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+                <div>
+                    <h2 class="mb-0 text-white text-uppercase fw-bold">
+                        <i class="fas fa-users-cog me-2"></i>
+                        Quản trị hệ thống
+                    </h2>
+
+                    <small class="text-white-50">
+                        Tổng cộng @(Model?.Count() ?? 0) thành viên
+                    </small>
+                </div>
+
+                <button class="btn btn-light btn-sm fw-bold">
+                    <i class="fas fa-user-plus me-1"></i>
+                    Thêm mới
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- TABLE -->
+        <div class="table-responsive p-4">
+
+            <table class="table table-hover align-middle custom-table">
+
+                <thead>
+                    <tr>
+                        <th class="text-center">ID</th>
+                        <th>Tài khoản</th>
+                        <th>Họ và tên</th>
+                        <th class="text-center">Vai trò</th>
+                        <th class="text-end">Hành động</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var user in Model)
+                        {
+                            var firstChar = !string.IsNullOrEmpty(user.Username)
+                            ? user.Username.Substring(0, 1).ToUpper()
+                            : "?";
+
+                            bool isAdmin =
+                            user.Role != null &&
+                            (user.Role.Contains("Admin") ||
+                            user.Role.Contains("Quản"));
+
+                            <tr>
+
+                                <td class="text-center fw-bold text-muted">
+                                    #@user.Id
+                                </td>
+
+                                <td>
+                                    <div class="d-flex align-items-center">
+
+                                        <div class="avatar-circle me-3">
+                                            @firstChar
+                                        </div>
+
+                                        <span class="fw-semibold">
+                                            @user.Username
+                                        </span>
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    @user.FullName
+                                </td>
+
+                                <td class="text-center">
+
+                                    <span class="badge-custom @(isAdmin ? "badge-admin" : "badge-editor")">
+
+                                        <i class="fas @(isAdmin ? "fa-shield-halved" : "fa-user") me-1"></i>
+
+                                        @user.Role
+
+                                    </span>
+
+                                </td>
+
+                                <td class="text-end">
+
+                                    <button class="btn btn-action btn-edit me-1"
+                                            title="Sửa">
+
+                                        <i class="fas fa-edit"></i>
+
+                                    </button>
+
+                                    <button class="btn btn-action btn-delete"
+                                            title="Xóa">
+
+                                        <i class="fas fa-trash"></i>
+
+                                    </button>
+
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+
+                            <td colspan="5"
+                                class="text-center py-5 text-muted">
+
+                                <i class="fas fa-users-slash fs-1 d-block mb-3"></i>
+
+                                Chưa có thành viên nào
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<style>
+
+    :root {
+        --primary-color: #4e73df;
+        --secondary-color: #224abe;
+        --admin-color: #e74a3b;
+        --editor-color: #36b9cc;
+    }
+
+    body {
+        background: #f8f9fc;
+    }
+
+    .user-management-card {
+        background: #fff;
+        border-radius: 18px;
+        overflow: hidden;
+    }
+
+    .card-header-custom {
+        background: linear-gradient( 135deg, var(--primary-color) 0%, var(--secondary-color) 100% );
+        padding: 1.5rem 2rem;
+    }
+
+    .custom-table thead th {
+        background-color: #f8f9fc;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: 0.05rem;
+        color: #4e73df;
+        border-top: none;
+    }
+
+    .avatar-circle {
+        width: 38px;
+        height: 38px;
+        background-color: #eaecf4;
+        color: #4e73df;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 15px;
+    }
+
+    .badge-custom {
+        padding: 0.5em 1em;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        display: inline-block;
+    }
+
+    .badge-admin {
+        background-color: #ffebe9;
+        color: var(--admin-color);
+    }
+
+    .badge-editor {
+        background-color: #e3f7f9;
+        color: var(--editor-color);
+    }
+
+    .btn-action {
+        width: 34px;
+        height: 34px;
+        padding: 0;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+        border: none;
+    }
+
+    .btn-edit {
+        background-color: #f6f6f6;
+        color: #f6c23e;
+    }
+
+        .btn-edit:hover {
+            background-color: #f6c23e;
+            color: white;
+        }
+
+    .btn-delete {
+        background-color: #f6f6f6;
+        color: #e74a3b;
+    }
+
+        .btn-delete:hover {
+            background-color: #e74a3b;
+            color: white;
+        }
+
+    .custom-table tbody tr {
+        transition: all 0.2s ease;
+    }
+
+        .custom-table tbody tr:hover {
+            background-color: #fcfdff;
+            transform: scale(1.003);
+        }
+</style>
