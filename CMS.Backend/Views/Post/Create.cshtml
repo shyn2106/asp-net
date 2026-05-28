@@ -1,0 +1,136 @@
+﻿@model CMS.Data.Entities.Post
+
+@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Thêm bài viết";
+}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+
+            <h4>
+                <i class="bi bi-file-earmark-plus"></i>
+                THÊM BÀI VIẾT MỚI
+            </h4>
+
+        </div>
+
+        <div class="card-body">
+
+            <form asp-action="Create"
+                  method="post"
+                  enctype="multipart/form-data">
+
+                <div class="row">
+
+                    <div class="col-md-8">
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-bold">
+                                Tiêu đề
+                            </label>
+
+                            <input asp-for="Title"
+                                   class="form-control" />
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-bold">
+                                Nội dung
+                            </label>
+
+                            <textarea asp-for="Content"
+                                      class="form-control"
+                                      rows="10"></textarea>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-bold">
+                                Danh mục
+                            </label>
+
+                            <select asp-for="CategoryId"
+                                    asp-items="ViewBag.CategoryList"
+                                    class="form-select">
+
+                                <option value="">
+                                    -- Chọn danh mục --
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-bold">
+                                Upload ảnh
+                            </label>
+
+                            <input type="file"
+                                   name="uploadImage"
+                                   class="form-control" />
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-bold">
+                                Ngày đăng
+                            </label>
+
+                            <input asp-for="CreatedDate"
+                                   type="date"
+                                   class="form-control"
+                                   value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+
+                        </div>
+
+                        <button type="submit"
+                                class="btn btn-success w-100">
+
+                            <i class="bi bi-cloud-upload"></i>
+                            Lưu bài viết
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <!-- CKEDITOR -->
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+
+    <script>
+
+        ClassicEditor
+            .create(document.querySelector('#Content'))
+            .catch(error => {
+                console.error(error);
+            });
+
+    </script>
+
+}

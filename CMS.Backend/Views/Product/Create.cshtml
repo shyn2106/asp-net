@@ -1,0 +1,74 @@
+﻿@model CMS.Data.Entities.Product
+
+@{
+    Layout = "_LayoutAdmin";
+}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-success text-white">
+            <h4>THÊM SẢN PHẨM</h4>
+        </div>
+
+        <div class="card-body">
+
+            <form asp-action="Create"
+                  method="post"
+                  enctype="multipart/form-data">
+
+                <div class="mb-3">
+                    <label>Tên sản phẩm</label>
+                    <input asp-for="Name" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label>Giá</label>
+                    <input asp-for="Price" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label>Mô tả</label>
+                    <textarea asp-for="Description"
+                              class="form-control"></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label>Danh mục</label>
+
+                    <select asp-for="CategoryProductId"
+                            asp-items="ViewBag.CategoryList"
+                            class="form-select">
+
+                        <option value="">
+                            -- Chọn danh mục --
+                        </option>
+
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label>Ảnh sản phẩm</label>
+
+                    <input type="file"
+                           name="uploadImage"
+                           class="form-control" />
+                </div>
+
+                <button class="btn btn-success">
+                    Lưu sản phẩm
+                </button>
+
+                <a asp-action="Index"
+                   class="btn btn-secondary">
+                    Quay lại
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

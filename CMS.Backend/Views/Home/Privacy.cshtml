@@ -1,0 +1,101 @@
+﻿@{
+    ViewData["Title"] = "Chính sách bảo mật";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<div class="container mt-5 mb-5">
+    <div class="privacy-wrapper shadow-lg">
+        <div class="privacy-header text-center text-white p-5">
+            <i class="fas fa-user-shield fa-4x mb-3"></i>
+            <h1 class="fw-bold">@ViewData["Title"]</h1>
+            <p class="mb-0">Cập nhật lần cuối: 15 tháng 05, 2026</p>
+        </div>
+
+        <div class="privacy-body p-4 p-md-5 bg-white">
+            <div class="row">
+                <div class="col-lg-12">
+                    <p class="lead text-muted mb-5">
+                        Chúng tôi tôn trọng quyền riêng tư của bạn và cam kết bảo vệ dữ liệu cá nhân của bạn.
+                        Chính sách này sẽ giải thích cách chúng tôi xử lý thông tin khi bạn sử dụng hệ thống CMS.
+                    </p>
+
+                    <div class="privacy-item mb-4">
+                        <h4><i class="fas fa-database text-primary me-2"></i> 1. Thông tin chúng tôi thu thập</h4>
+                        <p>Chúng tôi chỉ thu thập các thông tin cần thiết để quản lý tài khoản người dùng và bài viết trên hệ thống, bao gồm tên đăng nhập, họ tên và địa chỉ email.</p>
+                    </div>
+
+                    <div class="privacy-item mb-4">
+                        <h4><i class="fas fa-eye text-primary me-2"></i> 2. Cách chúng tôi sử dụng thông tin</h4>
+                        <p>Thông tin của bạn được sử dụng để:</p>
+                        <ul>
+                            <li>Xác thực quyền truy cập vào hệ thống Admin.</li>
+                            <li>Ghi nhận tác giả cho các bài viết được đăng tải.</li>
+                            <li>Cải thiện trải nghiệm người dùng trên hệ thống CMS.</li>
+                        </ul>
+                    </div>
+
+                    <div class="privacy-item mb-4">
+                        <h4><i class="fas fa-lock text-primary me-2"></i> 3. Bảo mật dữ liệu</h4>
+                        <p>Dữ liệu mật khẩu của bạn được mã hóa (Hash) an toàn trong cơ sở dữ liệu. Chúng tôi sử dụng các giao thức bảo mật hiện đại để ngăn chặn truy cập trái phép.</p>
+                    </div>
+
+                    <div class="privacy-item mb-4">
+                        <h4><i class="fas fa-cookie-bite text-primary me-2"></i> 4. Cookies</h4>
+                        <p>Hệ thống sử dụng Cookie để duy trì trạng thái đăng nhập của bạn. Bạn có thể tùy chỉnh trình duyệt để từ chối Cookie, nhưng điều này có thể ảnh hưởng đến một số tính năng của hệ thống.</p>
+                    </div>
+
+                    <div class="contact-box mt-5 p-4 rounded-3 text-center bg-light border">
+                        <h5>Bạn có câu hỏi về chính sách này?</h5>
+                        <p class="small text-muted">Liên hệ quản trị viên hệ thống để được giải đáp.</p>
+                        <a href="mailto:phuc@example.com" class="btn btn-primary rounded-pill">Liên hệ hỗ trợ</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f0f2f5;
+    }
+
+    .privacy-wrapper {
+        border-radius: 20px;
+        overflow: hidden;
+        border: none;
+    }
+
+    .privacy-header {
+        background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+    }
+
+    .privacy-body h4 {
+        font-weight: 700;
+        color: #2c3e50;
+        margin-top: 2rem;
+    }
+
+    .privacy-body p, .privacy-body li {
+        color: #4a5568;
+        line-height: 1.8;
+    }
+
+    .privacy-item {
+        border-left: 4px solid #4e73df;
+        padding-left: 20px;
+        transition: 0.3s;
+    }
+
+        .privacy-item:hover {
+            background-color: #f8f9fc;
+            transform: translateX(10px);
+        }
+
+    .contact-box {
+        border-style: dashed !important;
+        border-width: 2px !important;
+        border-color: #4e73df !important;
+    }
+</style>
