@@ -1,0 +1,162 @@
+﻿@model IEnumerable<CMS.Data.Entities.Post>
+
+@{
+    ViewData["Title"] = "Trình xem bài viết";
+}
+
+<div class="container mt-5">
+    <div class="text-center mb-5">
+        <h2 class="fw-bold text-uppercase" style="letter-spacing: 2px;">
+            Khám phá bài viết
+        </h2>
+
+        <div class="mx-auto bg-primary"
+             style="height: 3px; width: 60px;">
+        </div>
+
+        <p class="text-muted mt-2">
+            Tổng cộng có @(Model?.Count() ?? 0) bài viết
+        </p>
+    </div>
+
+    <div class="row">
+        @if (Model != null && Model.Any())
+        {
+            foreach (var item in Model)
+            {
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100 border-0 shadow-sm post-card">
+
+                        <!-- IMAGE -->
+                        <div class="position-relative overflow-hidden"
+                             style="height:220px; border-radius:15px 15px 0 0;">
+
+                            <img src="@(string.IsNullOrEmpty(item.ImageUrl)
+                                                                         ? "https://via.placeholder.com/400x250?text=No+Image"
+                                                                         : item.ImageUrl)"
+                         class="w-100 h-100 transition-img"
+                         style="object-fit:cover;"
+                         alt="@item.Title" />
+
+                            <div class="category-badge">
+                                #@item.Id
+                            </div>
+                        </div>
+
+                        <!-- BODY -->
+                        <div class="card-body p-4">
+
+                            <h5 class="card-title fw-bold text-dark line-clamp-2">
+                                @item.Title
+                            </h5>
+
+                            <p class="card-text text-secondary small line-clamp-3 mb-4">
+                                @item.Content
+                            </p>
+
+                            <p class="text-muted small mb-0">
+                                <i class="bi bi-calendar-event"></i>
+                                @item.CreatedDate.ToString("dd/MM/yyyy")
+                            </p>
+
+                        </div>
+
+                        <!-- FOOTER -->
+                        <div class="card-footer bg-transparent border-0 p-4 pt-0">
+
+                            <a asp-controller="Post"
+                               asp-action="Details"
+                               asp-route-id="@item.Id"
+                               class="btn btn-dark w-100 rounded-pill py-2 fw-semibold shadow-sm">
+
+                                Đọc chi tiết
+                                <i class="bi bi-arrow-right ms-2"></i>
+
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+                }
+        }
+        else
+        {
+            <div class="col-12 text-center py-5">
+
+                <i class="bi bi-folder-x display-1 text-light"></i>
+
+                <p class="text-muted mt-3">
+                    Hiện chưa có bài viết nào được đăng tải.
+                </p>
+
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <style>
+
+        .post-card {
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            background: #fff;
+        }
+
+            .post-card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 20px 40px rgba(0,0,0,0.12) !important;
+            }
+
+        .transition-img {
+            transition: transform 0.7s ease;
+        }
+
+        .post-card:hover .transition-img {
+            transform: scale(1.1);
+        }
+
+        .category-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(78,115,223,0.9);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            min-height: 48px;
+        }
+
+        .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            min-height: 70px;
+        }
+
+        .btn-dark {
+            background: #2c3e50;
+            border: none;
+            transition: 0.3s ease;
+        }
+
+            .btn-dark:hover {
+                background: #4e73df;
+                transform: scale(1.02);
+            }
+    </style>
+}

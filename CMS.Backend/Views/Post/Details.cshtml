@@ -1,0 +1,33 @@
+﻿@model CMS.Data.Entities.Post
+
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <a asp-action="Index" class="btn btn-link text-decoration-none p-0 mb-4 text-muted">
+                <i class="bi bi-arrow-left"></i> Quay lại danh sách
+            </a>
+
+            <div class="rounded-4 overflow-hidden shadow mb-4" style="height: 400px;">
+                <img src="@Model.ImageUrl" class="w-100 h-100" style="object-fit: cover;" />
+            </div>
+
+            <span class="badge bg-primary mb-2">Chủ đề Công nghệ</span>
+            <h1 class="fw-bold mb-3">@Model.Title</h1>
+
+            <div class="d-flex align-items-center mb-4 text-muted">
+                <i class="bi bi-calendar3 me-2"></i> 15/05/2026
+                <span class="mx-2">|</span>
+                <i class="bi bi-person me-2"></i> Đăng bởi Phúc
+            </div>
+
+            <p class="lead text-dark" style="line-height: 1.8; text-align: justify;">
+                @Model.Content
+            </p>
+
+            <div class="alert alert-light border mt-5">
+                <h5>Bạn thấy bài viết này hữu ích?</h5>
+                <p class="mb-0 small">Chia sẻ kiến thức này đến bạn bè cùng lớp CCQ2311F nhé!</p>
+            </div>
+        </div>
+    </div>
+</div>

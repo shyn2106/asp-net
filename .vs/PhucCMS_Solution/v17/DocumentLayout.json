@@ -1,0 +1,245 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\asp\\asp-net-main\\asp-net-main\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{F009A73C-A146-4F3D-A6B8-249B83540C65}|CMS.Backend\\CMS.Backend.csproj|d:\\asp\\asp-net-main\\asp-net-main\\cms.backend\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{F009A73C-A146-4F3D-A6B8-249B83540C65}|CMS.Backend\\CMS.Backend.csproj|solutionrelative:cms.backend\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F009A73C-A146-4F3D-A6B8-249B83540C65}|CMS.Backend\\CMS.Backend.csproj|d:\\asp\\asp-net-main\\asp-net-main\\cms.backend\\views\\orderdetail\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{F009A73C-A146-4F3D-A6B8-249B83540C65}|CMS.Backend\\CMS.Backend.csproj|solutionrelative:cms.backend\\views\\orderdetail\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F009A73C-A146-4F3D-A6B8-249B83540C65}|CMS.Backend\\CMS.Backend.csproj|d:\\asp\\asp-net-main\\asp-net-main\\cms.backend\\controllers\\orderdetailcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F009A73C-A146-4F3D-A6B8-249B83540C65}|CMS.Backend\\CMS.Backend.csproj|solutionrelative:cms.backend\\controllers\\orderdetailcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F009A73C-A146-4F3D-A6B8-249B83540C65}|CMS.Backend\\CMS.Backend.csproj|d:\\asp\\asp-net-main\\asp-net-main\\cms.backend\\views\\order\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{F009A73C-A146-4F3D-A6B8-249B83540C65}|CMS.Backend\\CMS.Backend.csproj|solutionrelative:cms.backend\\views\\order\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F009A73C-A146-4F3D-A6B8-249B83540C65}|CMS.Backend\\CMS.Backend.csproj|d:\\asp\\asp-net-main\\asp-net-main\\cms.backend\\controllers\\ordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F009A73C-A146-4F3D-A6B8-249B83540C65}|CMS.Backend\\CMS.Backend.csproj|solutionrelative:cms.backend\\controllers\\ordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F009A73C-A146-4F3D-A6B8-249B83540C65}|CMS.Backend\\CMS.Backend.csproj|d:\\asp\\asp-net-main\\asp-net-main\\cms.backend\\views\\customer\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{F009A73C-A146-4F3D-A6B8-249B83540C65}|CMS.Backend\\CMS.Backend.csproj|solutionrelative:cms.backend\\views\\customer\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F009A73C-A146-4F3D-A6B8-249B83540C65}|CMS.Backend\\CMS.Backend.csproj|d:\\asp\\asp-net-main\\asp-net-main\\cms.backend\\controllers\\customercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F009A73C-A146-4F3D-A6B8-249B83540C65}|CMS.Backend\\CMS.Backend.csproj|solutionrelative:cms.backend\\controllers\\customercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F009A73C-A146-4F3D-A6B8-249B83540C65}|CMS.Backend\\CMS.Backend.csproj|d:\\asp\\asp-net-main\\asp-net-main\\cms.backend\\views\\product\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{F009A73C-A146-4F3D-A6B8-249B83540C65}|CMS.Backend\\CMS.Backend.csproj|solutionrelative:cms.backend\\views\\product\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F009A73C-A146-4F3D-A6B8-249B83540C65}|CMS.Backend\\CMS.Backend.csproj|d:\\asp\\asp-net-main\\asp-net-main\\cms.backend\\controllers\\productcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F009A73C-A146-4F3D-A6B8-249B83540C65}|CMS.Backend\\CMS.Backend.csproj|solutionrelative:cms.backend\\controllers\\productcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F009A73C-A146-4F3D-A6B8-249B83540C65}|CMS.Backend\\CMS.Backend.csproj|d:\\asp\\asp-net-main\\asp-net-main\\cms.backend\\views\\categoryproduct\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{F009A73C-A146-4F3D-A6B8-249B83540C65}|CMS.Backend\\CMS.Backend.csproj|solutionrelative:cms.backend\\views\\categoryproduct\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F009A73C-A146-4F3D-A6B8-249B83540C65}|CMS.Backend\\CMS.Backend.csproj|d:\\asp\\asp-net-main\\asp-net-main\\cms.backend\\controllers\\categoryproductcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F009A73C-A146-4F3D-A6B8-249B83540C65}|CMS.Backend\\CMS.Backend.csproj|solutionrelative:cms.backend\\controllers\\categoryproductcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F009A73C-A146-4F3D-A6B8-249B83540C65}|CMS.Backend\\CMS.Backend.csproj|d:\\asp\\asp-net-main\\asp-net-main\\cms.backend\\views\\user\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{F009A73C-A146-4F3D-A6B8-249B83540C65}|CMS.Backend\\CMS.Backend.csproj|solutionrelative:cms.backend\\views\\user\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F009A73C-A146-4F3D-A6B8-249B83540C65}|CMS.Backend\\CMS.Backend.csproj|d:\\asp\\asp-net-main\\asp-net-main\\cms.backend\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F009A73C-A146-4F3D-A6B8-249B83540C65}|CMS.Backend\\CMS.Backend.csproj|solutionrelative:cms.backend\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e5c86464-96be-4d7c-9a8b-abcb3bbf5f92}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "D:\\asp\\asp-net-main\\asp-net-main\\CMS.Backend\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "CMS.Backend\\Views\\Home\\Index.cshtml",
+              "ToolTip": "D:\\asp\\asp-net-main\\asp-net-main\\CMS.Backend\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "CMS.Backend\\Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAAJwAAAAAAAAAAAAowP4AAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-17T09:48:01.799Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "D:\\asp\\asp-net-main\\asp-net-main\\CMS.Backend\\Views\\OrderDetail\\Index.cshtml",
+              "RelativeDocumentMoniker": "CMS.Backend\\Views\\OrderDetail\\Index.cshtml",
+              "ToolTip": "D:\\asp\\asp-net-main\\asp-net-main\\CMS.Backend\\Views\\OrderDetail\\Index.cshtml",
+              "RelativeToolTip": "CMS.Backend\\Views\\OrderDetail\\Index.cshtml",
+              "ViewState": "AgIAAHEAAAAAAAAAAAAowIcAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-17T09:47:35.992Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "OrderDetailController.cs",
+              "DocumentMoniker": "D:\\asp\\asp-net-main\\asp-net-main\\CMS.Backend\\Controllers\\OrderDetailController.cs",
+              "RelativeDocumentMoniker": "CMS.Backend\\Controllers\\OrderDetailController.cs",
+              "ToolTip": "D:\\asp\\asp-net-main\\asp-net-main\\CMS.Backend\\Controllers\\OrderDetailController.cs",
+              "RelativeToolTip": "CMS.Backend\\Controllers\\OrderDetailController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAowBEAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-17T09:47:06.636Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "D:\\asp\\asp-net-main\\asp-net-main\\CMS.Backend\\Views\\Order\\Index.cshtml",
+              "RelativeDocumentMoniker": "CMS.Backend\\Views\\Order\\Index.cshtml",
+              "ToolTip": "D:\\asp\\asp-net-main\\asp-net-main\\CMS.Backend\\Views\\Order\\Index.cshtml",
+              "RelativeToolTip": "CMS.Backend\\Views\\Order\\Index.cshtml",
+              "ViewState": "AgIAAJkAAAAAAAAAAAAowLAAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-17T09:46:15.863Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "OrderController.cs",
+              "DocumentMoniker": "D:\\asp\\asp-net-main\\asp-net-main\\CMS.Backend\\Controllers\\OrderController.cs",
+              "RelativeDocumentMoniker": "CMS.Backend\\Controllers\\OrderController.cs",
+              "ToolTip": "D:\\asp\\asp-net-main\\asp-net-main\\CMS.Backend\\Controllers\\OrderController.cs",
+              "RelativeToolTip": "CMS.Backend\\Controllers\\OrderController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAowBAAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-17T09:45:34.403Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "D:\\asp\\asp-net-main\\asp-net-main\\CMS.Backend\\Views\\Customer\\Index.cshtml",
+              "RelativeDocumentMoniker": "CMS.Backend\\Views\\Customer\\Index.cshtml",
+              "ToolTip": "D:\\asp\\asp-net-main\\asp-net-main\\CMS.Backend\\Views\\Customer\\Index.cshtml",
+              "RelativeToolTip": "CMS.Backend\\Views\\Customer\\Index.cshtml",
+              "ViewState": "AgIAAJsAAAAAAAAAAAAowLAAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-17T09:44:31.71Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "CustomerController.cs",
+              "DocumentMoniker": "D:\\asp\\asp-net-main\\asp-net-main\\CMS.Backend\\Controllers\\CustomerController.cs",
+              "RelativeDocumentMoniker": "CMS.Backend\\Controllers\\CustomerController.cs",
+              "ToolTip": "D:\\asp\\asp-net-main\\asp-net-main\\CMS.Backend\\Controllers\\CustomerController.cs",
+              "RelativeToolTip": "CMS.Backend\\Controllers\\CustomerController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAowBcAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-17T09:43:50.497Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "D:\\asp\\asp-net-main\\asp-net-main\\CMS.Backend\\Views\\Product\\Index.cshtml",
+              "RelativeDocumentMoniker": "CMS.Backend\\Views\\Product\\Index.cshtml",
+              "ToolTip": "D:\\asp\\asp-net-main\\asp-net-main\\CMS.Backend\\Views\\Product\\Index.cshtml",
+              "RelativeToolTip": "CMS.Backend\\Views\\Product\\Index.cshtml",
+              "ViewState": "AgIAAHcAAAAAAAAAAAAowI4AAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-17T09:42:54.959Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "ProductController.cs",
+              "DocumentMoniker": "D:\\asp\\asp-net-main\\asp-net-main\\CMS.Backend\\Controllers\\ProductController.cs",
+              "RelativeDocumentMoniker": "CMS.Backend\\Controllers\\ProductController.cs",
+              "ToolTip": "D:\\asp\\asp-net-main\\asp-net-main\\CMS.Backend\\Controllers\\ProductController.cs",
+              "RelativeToolTip": "CMS.Backend\\Controllers\\ProductController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAowBcAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-17T09:42:17.478Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "D:\\asp\\asp-net-main\\asp-net-main\\CMS.Backend\\Views\\CategoryProduct\\Index.cshtml",
+              "RelativeDocumentMoniker": "CMS.Backend\\Views\\CategoryProduct\\Index.cshtml",
+              "ToolTip": "D:\\asp\\asp-net-main\\asp-net-main\\CMS.Backend\\Views\\CategoryProduct\\Index.cshtml",
+              "RelativeToolTip": "CMS.Backend\\Views\\CategoryProduct\\Index.cshtml",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAowGgAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-17T09:41:24.971Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "CategoryProductController.cs",
+              "DocumentMoniker": "D:\\asp\\asp-net-main\\asp-net-main\\CMS.Backend\\Controllers\\CategoryProductController.cs",
+              "RelativeDocumentMoniker": "CMS.Backend\\Controllers\\CategoryProductController.cs",
+              "ToolTip": "D:\\asp\\asp-net-main\\asp-net-main\\CMS.Backend\\Controllers\\CategoryProductController.cs",
+              "RelativeToolTip": "CMS.Backend\\Controllers\\CategoryProductController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-17T09:40:24.156Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "D:\\asp\\asp-net-main\\asp-net-main\\CMS.Backend\\Views\\User\\Index.cshtml",
+              "RelativeDocumentMoniker": "CMS.Backend\\Views\\User\\Index.cshtml",
+              "ToolTip": "D:\\asp\\asp-net-main\\asp-net-main\\CMS.Backend\\Views\\User\\Index.cshtml",
+              "RelativeToolTip": "CMS.Backend\\Views\\User\\Index.cshtml",
+              "ViewState": "AgIAAOYAAAAAAAAAAAAowPgAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-17T09:33:24.394Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "UserController.cs",
+              "DocumentMoniker": "D:\\asp\\asp-net-main\\asp-net-main\\CMS.Backend\\Controllers\\UserController.cs",
+              "RelativeDocumentMoniker": "CMS.Backend\\Controllers\\UserController.cs",
+              "ToolTip": "D:\\asp\\asp-net-main\\asp-net-main\\CMS.Backend\\Controllers\\UserController.cs",
+              "RelativeToolTip": "CMS.Backend\\Controllers\\UserController.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAzwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-17T09:33:13.641Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,177 @@
+﻿@model IEnumerable<CMS.Data.Entities.Order>
+
+@{
+    ViewData["Title"] = "Danh sách đơn hàng";
+}
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<div class="container mt-5">
+
+    <div class="order-card shadow-lg border-0">
+
+        <!-- HEADER -->
+        <div class="header-custom">
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+                <div>
+
+                    <h2 class="text-white fw-bold mb-1">
+                        <i class="fas fa-cart-shopping me-2"></i>
+                        Quản lý đơn hàng
+                    </h2>
+
+                    <small class="text-white-50">
+                        Tổng cộng @(Model?.Count() ?? 0) đơn hàng
+                    </small>
+
+                </div>
+
+                <button class="btn btn-light btn-sm fw-bold">
+
+                    <i class="fas fa-plus me-1"></i>
+                    Tạo đơn hàng
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- TABLE -->
+        <div class="table-responsive p-4">
+
+            <table class="table table-hover align-middle custom-table">
+
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Ngày đặt</th>
+                        <th>Customer ID</th>
+                        <th>Trạng thái</th>
+                        <th>Ghi chú</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            bool completed = item.Status == 1;
+
+                            <tr>
+
+                                <td class="fw-bold text-muted">
+                                    #@item.Id
+                                </td>
+
+                                <td>
+                                    @item.OrderDate.ToString("dd/MM/yyyy")
+                                </td>
+
+                                <td>
+                                    KH-@item.CustomerId
+                                </td>
+
+                                <td>
+
+                                    <span class="status-badge @(completed ? "status-success" : "status-pending")">
+
+                                        <i class="fas @(completed ? "fa-circle-check" : "fa-clock") me-1"></i>
+
+                                        @(completed ? "Đã xác nhận" : "Chờ xử lý")
+
+                                    </span>
+
+                                </td>
+
+                                <td>
+                                    @item.Notes
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+
+                            <td colspan="5"
+                                class="text-center py-5 text-muted">
+
+                                <i class="fas fa-cart-arrow-down fs-1 d-block mb-3"></i>
+
+                                Chưa có đơn hàng nào
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<style>
+
+    body {
+        background: #f8f9fc;
+    }
+
+    .order-card {
+        border-radius: 18px;
+        overflow: hidden;
+        background: white;
+    }
+
+    .header-custom {
+        background: linear-gradient(135deg, #1cc88a, #169b6b);
+        padding: 1.5rem 2rem;
+    }
+
+    .custom-table thead th {
+        background: #f8f9fc;
+        color: #1cc88a;
+        text-transform: uppercase;
+        font-size: 13px;
+        border-top: none;
+    }
+
+    .status-badge {
+        padding: 0.5em 1em;
+        border-radius: 50px;
+        font-size: 12px;
+        font-weight: bold;
+        display: inline-block;
+    }
+
+    .status-success {
+        background: #e8fff3;
+        color: #1cc88a;
+    }
+
+    .status-pending {
+        background: #fff4e5;
+        color: #f6c23e;
+    }
+
+    .custom-table tbody tr {
+        transition: all 0.2s ease;
+    }
+
+        .custom-table tbody tr:hover {
+            background: #fcfffd;
+            transform: scale(1.002);
+        }
+
+</style>

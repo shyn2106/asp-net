@@ -1,0 +1,177 @@
+﻿@model IEnumerable<CMS.Data.Entities.Customer>
+
+@{
+    ViewData["Title"] = "Danh sách khách hàng";
+}
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<div class="container mt-5">
+
+    <div class="customer-card shadow-lg border-0">
+
+        <!-- HEADER -->
+        <div class="header-custom">
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+                <div>
+
+                    <h2 class="text-white fw-bold mb-1">
+                        <i class="fas fa-users me-2"></i>
+                        Danh sách khách hàng
+                    </h2>
+
+                    <small class="text-white-50">
+                        Tổng cộng @(Model?.Count() ?? 0) khách hàng
+                    </small>
+
+                </div>
+
+                <button class="btn btn-light fw-bold btn-sm">
+
+                    <i class="fas fa-user-plus me-1"></i>
+                    Thêm khách hàng
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- TABLE -->
+        <div class="table-responsive p-4">
+
+            <table class="table align-middle table-hover custom-table">
+
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Khách hàng</th>
+                        <th>Email</th>
+                        <th>Số điện thoại</th>
+                        <th>Địa chỉ</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            var avatar = !string.IsNullOrEmpty(item.FullName)
+                            ? item.FullName.Substring(0, 1).ToUpper()
+                            : "?";
+
+                            <tr>
+
+                                <td class="fw-bold text-muted">
+                                    #@item.Id
+                                </td>
+
+                                <td>
+
+                                    <div class="d-flex align-items-center">
+
+                                        <div class="avatar-circle me-3">
+                                            @avatar
+                                        </div>
+
+                                        <span class="fw-semibold">
+                                            @item.FullName
+                                        </span>
+
+                                    </div>
+
+                                </td>
+
+                                <td>
+                                    @item.Email
+                                </td>
+
+                                <td>
+                                    @item.Phone
+                                </td>
+
+                                <td>
+                                    @item.Address
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+
+                            <td colspan="5"
+                                class="text-center py-5 text-muted">
+
+                                <i class="fas fa-user-slash fs-1 d-block mb-3"></i>
+
+                                Chưa có khách hàng nào
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<style>
+
+    body {
+        background: #f8f9fc;
+    }
+
+    .customer-card {
+        border-radius: 18px;
+        overflow: hidden;
+        background: white;
+    }
+
+    .header-custom {
+        background: linear-gradient(135deg, #4e73df, #224abe);
+        padding: 1.5rem 2rem;
+    }
+
+    .custom-table thead th {
+        background: #f8f9fc;
+        color: #4e73df;
+        text-transform: uppercase;
+        font-size: 13px;
+        border-top: none;
+    }
+
+    .avatar-circle {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #eaecf4;
+        color: #4e73df;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+    }
+
+    .custom-table tbody tr {
+        transition: all 0.2s ease;
+    }
+
+        .custom-table tbody tr:hover {
+            background: #fcfdff;
+            transform: scale(1.002);
+        }
+
+</style>
