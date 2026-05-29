@@ -550,3 +550,9 @@ P:\asp\asp-net-main\asp-net-main\CMS.Backend\obj\Debug\net8.0\refint\CMS.Backend
 P:\asp\asp-net-main\asp-net-main\CMS.Backend\obj\Debug\net8.0\CMS.Backend.pdb
 P:\asp\asp-net-main\asp-net-main\CMS.Backend\obj\Debug\net8.0\CMS.Backend.genruntimeconfig.cache
 P:\asp\asp-net-main\asp-net-main\CMS.Backend\obj\Debug\net8.0\ref\CMS.Backend.dll
+P:\asp\asp-net-main\asp-net-main\CMS.Backend\obj\Debug\net8.0\CMS.Backend.sourcelink.json
+P:\asp\asp-net-main\asp-net-main\CMS.Backend\bin\Debug\net8.0\Microsoft.OpenApi.dll
+P:\asp\asp-net-main\asp-net-main\CMS.Backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+P:\asp\asp-net-main\asp-net-main\CMS.Backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+P:\asp\asp-net-main\asp-net-main\CMS.Backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+P:\asp\asp-net-main\asp-net-main\CMS.Backend\obj\Debug\net8.0\CMS.Backend.MvcApplicationPartsAssemblyInfo.cs

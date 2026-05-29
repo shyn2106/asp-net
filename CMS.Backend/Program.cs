@@ -1,38 +1,54 @@
 using CMS.Data;
 using Microsoft.EntityFrameworkCore;
-
-// THÊM USING NÀY
 using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// MVC
 builder.Services.AddControllersWithViews();
 
-// K?t n?i Database SQL Server
+// Swagger
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+// =========================
+// CORS
+// =========================
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
+
+// Database
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")));
 
-
-// =========================
-// THÊM AUTHENTICATION
-// =========================
+// Authentication
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
         options.LoginPath = "/Account/Login";
-
         options.AccessDeniedPath = "/Account/AccessDenied";
     });
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Swagger
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-
     app.UseHsts();
 }
 
@@ -42,16 +58,13 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+// =========================
+// CORS
+// =========================
+app.UseCors("AllowAll");
 
-// =========================
-// THÊM DÒNG NÀY
-// =========================
 app.UseAuthentication();
 
-
-// =========================
-// AUTHORIZATION
-// =========================
 app.UseAuthorization();
 
 app.MapControllerRoute(
