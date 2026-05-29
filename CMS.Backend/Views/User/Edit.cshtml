@@ -1,0 +1,111 @@
+﻿@model CMS.Data.Entities.User
+
+@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Cập nhật thành viên";
+}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-warning">
+
+            <h5 class="mb-0">
+                CẬP NHẬT THÀNH VIÊN
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <form asp-action="Edit" method="post">
+
+                <input type="hidden" asp-for="Id" />
+
+                <div class="row mb-3">
+
+                    <div class="col-md-6">
+
+                        <label class="fw-bold">
+                            Username
+                        </label>
+
+                        <input asp-for="Username"
+                               class="form-control"
+                               readonly />
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <label class="fw-bold">
+                            Mật khẩu mới
+                        </label>
+
+                        <input type="password"
+                               name="NewPassword"
+                               class="form-control"
+                               placeholder="Để trống nếu không đổi" />
+
+                    </div>
+
+                </div>
+
+                <div class="row mb-3">
+
+                    <div class="col-md-6">
+
+                        <label class="fw-bold">
+                            Họ tên
+                        </label>
+
+                        <input asp-for="FullName"
+                               class="form-control" />
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <label class="fw-bold">
+                            Vai trò
+                        </label>
+
+                        <select asp-for="Role"
+                                class="form-select">
+
+                            <option value="Admin">
+                                Admin
+                            </option>
+
+                            <option value="Editor">
+                                Editor
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+                <button type="submit"
+                        class="btn btn-primary">
+
+                    Cập nhật
+
+                </button>
+
+                <a asp-action="Index"
+                   class="btn btn-secondary">
+
+                    Quay lại
+
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

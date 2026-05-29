@@ -1,0 +1,587 @@
+﻿
+@model IEnumerable<CMS.Data.Entities.Post>
+
+@{
+    ViewData["Title"] = "Hệ thống CMS - Admin";
+}
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap"
+      rel="stylesheet">
+
+<div class="welcome-section">
+
+    <div class="container py-5">
+
+        <!-- HERO -->
+        <div class="row mb-5 justify-content-center">
+
+            <div class="col-lg-8 text-center hero-content">
+
+                <div class="avatar-wrapper mb-4">
+
+                    <img src="https://ui-avatars.com/api/?name=@(User.FindFirst("FullName")?.Value ?? "Guest")&background=4e73df&color=fff&size=128"
+                         class="rounded-circle shadow-lg profile-img"
+                         alt="Avatar">
+
+                </div>
+
+                <h1 class="display-4 fw-bold mb-3">
+
+                    Chào mừng trở lại,
+
+                    <span class="text-gradient">
+
+                        @(User.FindFirst("FullName")?.Value ?? "Khách")
+
+                    </span>
+
+                </h1>
+
+                <p class="lead text-secondary mb-4">
+
+                    Hệ thống quản trị nội dung CMS đa nền tảng.
+                    Bạn muốn quản lý gì hôm nay?
+
+                </p>
+
+                <!-- LOGIN / LOGOUT -->
+                <div class="d-flex justify-content-center gap-3 flex-wrap">
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a asp-controller="Account"
+                           asp-action="Logout"
+                           class="btn btn-danger rounded-pill px-4 shadow">
+
+                            <i class="fas fa-right-from-bracket me-2"></i>
+
+                            Đăng xuất
+
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-controller="Account"
+                           asp-action="Login"
+                           class="btn btn-primary rounded-pill px-4 shadow">
+
+                            <i class="fas fa-right-to-bracket me-2"></i>
+
+                            Đăng nhập
+
+                        </a>
+                    }
+
+                    <a href="https://learn.microsoft.com/aspnet/core"
+                       target="_blank"
+                       class="btn btn-outline-primary rounded-pill px-4">
+
+                        <i class="fab fa-microsoft me-2"></i>
+
+                        Tài liệu .NET
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- MENU -->
+        <div class="row g-4 mb-5">
+
+            <!-- ORDER -->
+            <div class="col-md-4">
+
+                <div class="card-shortcut shadow-sm">
+
+                    <div class="icon-box bg-soft-success">
+
+                        <i class="fas fa-cart-shopping text-success"></i>
+
+                    </div>
+
+                    <h4>Đơn hàng</h4>
+
+                    <p>
+                        Quản lý trạng thái và lịch sử đơn hàng.
+                    </p>
+
+                    <a asp-controller="Order"
+                       asp-action="Index"
+                       class="stretched-link text-decoration-none">
+
+                        Truy cập
+                        <i class="fas fa-arrow-right ms-1"></i>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+            <!-- ORDER DETAIL -->
+            <div class="col-md-4">
+
+                <div class="card-shortcut shadow-sm">
+
+                    <div class="icon-box bg-soft-primary">
+
+                        <i class="fas fa-file-invoice-dollar text-primary"></i>
+
+                    </div>
+
+                    <h4>Chi tiết đơn hàng</h4>
+
+                    <p>
+                        Xem thông tin sản phẩm trong từng đơn hàng.
+                    </p>
+
+                    <a asp-controller="OrderDetail"
+                       asp-action="Index"
+                       class="stretched-link text-decoration-none">
+
+                        Truy cập
+                        <i class="fas fa-arrow-right ms-1"></i>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+            <!-- POST -->
+            <div class="col-md-4">
+
+                <div class="card-shortcut shadow-sm">
+
+                    <div class="icon-box bg-soft-primary">
+
+                        <i class="fas fa-file-alt text-primary"></i>
+
+                    </div>
+
+                    <h4>Bài viết</h4>
+
+                    <p>
+                        Quản lý các tin tức, bài viết và lộ trình học tập.
+                    </p>
+
+                    <a asp-controller="Post"
+                       asp-action="Index"
+                       class="stretched-link text-decoration-none">
+
+                        Truy cập
+                        <i class="fas fa-arrow-right ms-1"></i>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+            <!-- USER -->
+            <div class="col-md-4">
+
+                <div class="card-shortcut shadow-sm">
+
+                    <div class="icon-box bg-soft-success">
+
+                        <i class="fas fa-user-shield text-success"></i>
+
+                    </div>
+
+                    <h4>Người dùng</h4>
+
+                    <p>
+                        Quản trị viên, biên tập viên và quyền truy cập hệ thống.
+                    </p>
+
+                    <a asp-controller="User"
+                       asp-action="Index"
+                       class="stretched-link text-decoration-none">
+
+                        Truy cập
+                        <i class="fas fa-arrow-right ms-1"></i>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+            <!-- CATEGORY -->
+            <div class="col-md-4">
+
+                <div class="card-shortcut shadow-sm">
+
+                    <div class="icon-box bg-soft-warning">
+
+                        <i class="fas fa-tags text-warning"></i>
+
+                    </div>
+
+                    <h4>Danh mục</h4>
+
+                    <p>
+                        Phân loại chủ đề và cấu trúc dữ liệu Backend.
+                    </p>
+
+                    <a asp-controller="Category"
+                       asp-action="Index"
+                       class="stretched-link text-decoration-none">
+
+                        Truy cập
+                        <i class="fas fa-arrow-right ms-1"></i>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+            <!-- CATEGORY PRODUCT -->
+            <div class="col-md-4">
+
+                <div class="card-shortcut shadow-sm">
+
+                    <div class="icon-box bg-soft-info">
+
+                        <i class="fas fa-layer-group text-info"></i>
+
+                    </div>
+
+                    <h4>Danh mục sản phẩm</h4>
+
+                    <p>
+                        Quản lý nhóm sản phẩm và phân loại hàng hóa.
+                    </p>
+
+                    <a asp-controller="CategoryProduct"
+                       asp-action="Index"
+                       class="stretched-link text-decoration-none">
+
+                        Truy cập
+                        <i class="fas fa-arrow-right ms-1"></i>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+            <!-- PRODUCT -->
+            <div class="col-md-4">
+
+                <div class="card-shortcut shadow-sm">
+
+                    <div class="icon-box bg-soft-danger">
+
+                        <i class="fas fa-box-open text-danger"></i>
+
+                    </div>
+
+                    <h4>Sản phẩm</h4>
+
+                    <p>
+                        Quản lý danh sách sản phẩm và tồn kho.
+                    </p>
+
+                    <a asp-controller="Product"
+                       asp-action="Index"
+                       class="stretched-link text-decoration-none">
+
+                        Truy cập
+                        <i class="fas fa-arrow-right ms-1"></i>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+            <!-- CUSTOMER -->
+            <div class="col-md-4">
+
+                <div class="card-shortcut shadow-sm">
+
+                    <div class="icon-box bg-soft-secondary">
+
+                        <i class="fas fa-users text-secondary"></i>
+
+                    </div>
+
+                    <h4>Khách hàng</h4>
+
+                    <p>
+                        Theo dõi thông tin khách hàng hệ thống.
+                    </p>
+
+                    <a asp-controller="Customer"
+                       asp-action="Index"
+                       class="stretched-link text-decoration-none">
+
+                        Truy cập
+                        <i class="fas fa-arrow-right ms-1"></i>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- LATEST POSTS -->
+        <div class="latest-post-section">
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+
+                <h2 class="fw-bold text-dark">
+
+                    <i class="fas fa-newspaper text-primary me-2"></i>
+
+                    3 BẢN TIN MỚI NHẤT
+
+                </h2>
+
+                <a asp-controller="Post"
+                   asp-action="Index"
+                   class="btn btn-outline-primary rounded-pill">
+
+                    Xem tất cả
+
+                </a>
+
+            </div>
+
+            <div class="row">
+
+                @foreach (var item in Model)
+                {
+                    <div class="col-lg-4 col-md-6 mb-4">
+
+                        <div class="card news-card border-0 shadow-sm h-100">
+
+                            <!-- IMAGE -->
+                            <div class="news-image">
+
+                                <img src="@(string.IsNullOrEmpty(item.ImageUrl)
+                                                                         ? "https://via.placeholder.com/600x400?text=No+Image"
+                                                                         : item.ImageUrl)"
+                                                                                         class="w-100 h-100"
+                                                                                         style="object-fit:cover;"
+                                                                                         alt="@item.Title">
+
+                            </div>
+
+                            <!-- BODY -->
+                            <div class="card-body p-4">
+
+                                <span class="badge bg-primary mb-3">
+
+                                    @(item.Category != null
+                                                                    ? item.Category.Name
+                                                                    : "Không có danh mục")
+
+                            </span>
+
+                                <h5 class="fw-bold line-clamp-2">
+                                    @item.Title
+                                </h5>
+
+                                <p class="text-muted line-clamp-3">
+                                    @item.Content
+                                </p>
+
+                            </div>
+
+                            <!-- FOOTER -->
+                            <div class="card-footer bg-white border-0 px-4 pb-4">
+
+                                <div class="d-flex justify-content-between align-items-center">
+
+                                    <small class="text-muted">
+
+                                        <i class="fas fa-calendar-alt me-1"></i>
+
+                                        @item.CreatedDate.ToString("dd/MM/yyyy")
+
+                                    </small>
+
+                                    <a asp-controller="Post"
+                                       asp-action="Details"
+                                       asp-route-id="@item.Id"
+                                       class="btn btn-sm btn-primary rounded-pill">
+
+                                        Đọc tiếp
+
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<style>
+
+    :root {
+        --primary: #4e73df;
+        --success: #1cc88a;
+        --warning: #f6c23e;
+        --dark-blue: #2c3e50;
+    }
+
+    body {
+        background-color: #f8f9fc;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .text-gradient {
+        background: linear-gradient(90deg, var(--primary), #9c27b0);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .profile-img {
+        border: 5px solid white;
+        transition: transform 0.3s ease;
+    }
+
+        .profile-img:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+    .card-shortcut {
+        background: white;
+        padding: 2rem;
+        border-radius: 20px;
+        border: 1px solid #edf2f9;
+        transition: all 0.3s ease;
+        height: 100%;
+        position: relative;
+    }
+
+        .card-shortcut:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
+            border-color: var(--primary);
+        }
+
+    .icon-box {
+        width: 60px;
+        height: 60px;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .bg-soft-primary {
+        background-color: #eef2ff;
+    }
+
+    .bg-soft-success {
+        background-color: #e6fcf5;
+    }
+
+    .bg-soft-warning {
+        background-color: #fff9db;
+    }
+
+    .bg-soft-info {
+        background-color: #e7f5ff;
+    }
+
+    .bg-soft-danger {
+        background-color: #fff5f5;
+    }
+
+    .bg-soft-secondary {
+        background-color: #f1f3f5;
+    }
+
+    .latest-post-section {
+        background: #ffffff;
+        padding: 35px;
+        border-radius: 24px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+
+    .news-card {
+        border-radius: 20px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        background: #fff;
+    }
+
+        .news-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.12) !important;
+        }
+
+    .news-image {
+        height: 220px;
+        overflow: hidden;
+    }
+
+        .news-image img {
+            transition: transform 0.5s ease;
+        }
+
+    .news-card:hover img {
+        transform: scale(1.08);
+    }
+
+    .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        min-height: 52px;
+    }
+
+    .line-clamp-3 {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        min-height: 72px;
+    }
+
+    .hero-content {
+        animation: fadeInUp 0.8s ease-out;
+    }
+
+    @@keyframes fadeInUp {
+
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+```
