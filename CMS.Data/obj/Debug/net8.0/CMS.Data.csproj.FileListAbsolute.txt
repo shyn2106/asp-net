@@ -39,3 +39,4 @@ P:\asp\asp-net-main\asp-net-main\CMS.Data\obj\Debug\net8.0\refint\CMS.Data.dll
 P:\asp\asp-net-main\asp-net-main\CMS.Data\obj\Debug\net8.0\CMS.Data.pdb
 P:\asp\asp-net-main\asp-net-main\CMS.Data\obj\Debug\net8.0\CMS.Data.genruntimeconfig.cache
 P:\asp\asp-net-main\asp-net-main\CMS.Data\obj\Debug\net8.0\ref\CMS.Data.dll
+P:\asp\asp-net-main\asp-net-main\CMS.Data\obj\Debug\net8.0\CMS.Data.sourcelink.json

@@ -4,89 +4,240 @@
     ViewData["Title"] = "Chi tiết bài viết";
 }
 
-<div class="container mt-5 mb-5">
+<link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<style>
+
+    body {
+        background: #f8fafc;
+    }
+
+    .hero-image {
+        height: 550px;
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.12);
+    }
+
+        .hero-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 0.6s;
+        }
+
+        .hero-image:hover img {
+            transform: scale(1.05);
+        }
+
+    .post-card {
+        background: #fff;
+        border-radius: 24px;
+        padding: 40px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+    }
+
+    .post-title {
+        font-size: 42px;
+        font-weight: 800;
+        line-height: 1.3;
+        color: #0f172a;
+    }
+
+    .post-meta {
+        display: flex;
+        gap: 25px;
+        flex-wrap: wrap;
+        color: #64748b;
+        margin-top: 20px;
+        margin-bottom: 30px;
+        font-size: 15px;
+    }
+
+        .post-meta i {
+            margin-right: 8px;
+        }
+
+    .category-badge {
+        display: inline-block;
+        padding: 10px 20px;
+        border-radius: 50px;
+        background: linear-gradient(135deg,#2563eb,#3b82f6);
+        color: white;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+
+    .content-box {
+        margin-top: 30px;
+        border-top: 1px solid #e5e7eb;
+        padding-top: 30px;
+    }
+
+        .content-box p {
+            line-height: 2;
+            font-size: 18px;
+            color: #334155;
+            text-align: justify;
+        }
+
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        color: #64748b;
+        font-weight: 600;
+        margin-bottom: 25px;
+        transition: .3s;
+    }
+
+        .back-btn:hover {
+            color: #2563eb;
+            transform: translateX(-4px);
+        }
+
+    .share-box {
+        margin-top: 50px;
+        background: linear-gradient(135deg,#1e293b,#0f172a);
+        color: white;
+        padding: 30px;
+        border-radius: 20px;
+    }
+
+        .share-box h4 {
+            font-weight: 700;
+        }
+
+        .share-box p {
+            margin-bottom: 0;
+            opacity: .8;
+        }
+
+    .author-box {
+        margin-top: 40px;
+        background: white;
+        border-radius: 20px;
+        padding: 25px;
+        box-shadow: 0 5px 20px rgba(0,0,0,.05);
+    }
+
+    .author-avatar {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        background: linear-gradient(135deg,#2563eb,#60a5fa);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-size: 28px;
+    }
+</style>
+
+<div class="container py-5">
 
     <div class="row justify-content-center">
 
-        <div class="col-lg-8">
+        <div class="col-lg-10">
 
-            <!-- BACK BUTTON -->
             <a asp-action="Index"
-               class="btn btn-link text-decoration-none p-0 mb-4 text-muted">
+               class="back-btn">
 
                 <i class="bi bi-arrow-left"></i>
-                Quay lại danh sách
+
+                Quay lại danh sách bài viết
 
             </a>
 
-            <!-- IMAGE -->
-            <div class="rounded-4 overflow-hidden shadow mb-4 detail-image">
+            <div class="hero-image mb-4">
 
                 <img src="@(string.IsNullOrEmpty(Model.ImageUrl)
-                                         ? "https://via.placeholder.com/1200x600?text=No+Image"
-                                         : Model.ImageUrl)"
-                     class="w-100 h-100 detail-img"
-                     alt="@Model.Title" />
+                                                  ? "https://picsum.photos/1200/600"
+                                                  : Model.ImageUrl)"
+                     alt="@Model.Title">
 
             </div>
 
-            <!-- CATEGORY -->
-            <span class="badge bg-primary px-3 py-2 mb-3">
+            <div class="post-card">
 
-                @(Model.Category != null
-                                ? Model.Category.Name
-                                : "Không có danh mục")
+                <span class="category-badge">
 
-            </span>
+                    @(Model.Category != null
+                                        ? Model.Category.Name
+                                        : "Không có danh mục")
 
-            <!-- TITLE -->
-            <h1 class="fw-bold mb-4 text-dark">
+                </span>
 
-                @Model.Title
+                <h1 class="post-title">
 
-            </h1>
+                    @Model.Title
 
-            <!-- META -->
-            <div class="d-flex align-items-center flex-wrap mb-4 text-muted small">
+                </h1>
 
-                <div class="me-4 mb-2">
+                <div class="post-meta">
 
-                    <i class="bi bi-calendar3 me-2"></i>
+                    <div>
+                        <i class="bi bi-calendar-event"></i>
+                        @Model.CreatedDate.ToString("dd/MM/yyyy")
+                    </div>
 
-                    @Model.CreatedDate.ToString("dd/MM/yyyy")
+                    <div>
+                        <i class="bi bi-person-circle"></i>
+                        Admin CMS
+                    </div>
+
+                    <div>
+                        <i class="bi bi-clock"></i>
+                        @Model.CreatedDate.ToString("HH:mm")
+                    </div>
 
                 </div>
 
-                <div class="mb-2">
-
-                    <i class="bi bi-person-circle me-2"></i>
-
-                    Admin CMS
-
-                </div>
-
-            </div>
-
-            <!-- CONTENT -->
-            <div class="content-box shadow-sm rounded-4 p-4 bg-white">
-
-                <p class="lead text-dark mb-0 content-text">
+                <div class="content-box">
 
                     @Html.Raw(Model.Content)
 
-                </p>
+                </div>
 
             </div>
 
-            <!-- ALERT -->
-            <div class="alert alert-light border rounded-4 mt-5 p-4 shadow-sm">
+            <div class="author-box">
 
-                <h5 class="fw-bold mb-2">
-                    Bạn thấy bài viết này hữu ích?
-                </h5>
+                <div class="d-flex align-items-center">
 
-                <p class="mb-0 small text-muted">
-                    Hãy chia sẻ kiến thức này đến bạn bè của bạn nhé!
+                    <div class="author-avatar me-3">
+
+                        <i class="bi bi-person-fill"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h5 class="fw-bold mb-1">
+                            Quản trị viên CMS
+                        </h5>
+
+                        <span class="text-muted">
+                            Người đăng tải và quản lý nội dung hệ thống.
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="share-box">
+
+                <h4>
+                    <i class="bi bi-share-fill me-2"></i>
+                    Chia sẻ bài viết
+                </h4>
+
+                <p>
+                    Nếu bạn thấy bài viết hữu ích, hãy chia sẻ cho bạn bè và đồng nghiệp cùng đọc.
                 </p>
 
             </div>
@@ -96,40 +247,3 @@
     </div>
 
 </div>
-
-@section Scripts {
-
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-
-    <style>
-
-        .detail-image {
-            height: 450px;
-        }
-
-        .detail-img {
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-            .detail-img:hover {
-                transform: scale(1.03);
-            }
-
-        .content-box {
-            border: 1px solid #f1f1f1;
-        }
-
-        .content-text {
-            line-height: 1.9;
-            text-align: justify;
-            font-size: 18px;
-        }
-
-        .badge {
-            font-size: 14px;
-            border-radius: 50px;
-        }
-    </style>
-}

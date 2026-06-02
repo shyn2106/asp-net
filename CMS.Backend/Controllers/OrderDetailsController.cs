@@ -1,42 +1,4 @@
-﻿//using CMS.Data;
-//using Microsoft.AspNetCore.Mvc;
-//using Microsoft.EntityFrameworkCore;
-
-//namespace CMS.Backend.Controllers
-//{
-//    [Route("api/[controller]")]
-//    [ApiController]
-//    public class OrderDetailsController : ControllerBase
-//    {
-//        private readonly ApplicationDbContext _context;
-
-//        public OrderDetailsController(ApplicationDbContext context)
-//        {
-//            _context = context;
-//        }
-
-//        // GET: api/orderdetails
-//        [HttpGet]
-//        public IActionResult GetAll()
-//        {
-//            var data = _context.OrderDetails
-//                .Include(x => x.Product)
-//                .Include(x => x.Order)
-//                .Select(x => new
-//                {
-//                    x.Id,
-//                    x.Quantity,
-//                    x.UnitPrice,
-
-//                    ProductName = x.Product.Name,
-//                    OrderId = x.OrderId
-//                })
-//                .ToList();
-
-//            return Ok(data);
-//        }
-//    }
-//}
+﻿
 using CMS.Data;
 using CMS.Data.Entities; // Thay thế bằng Namespace chứa Class OrderDetail của bạn
 using Microsoft.AspNetCore.Mvc;
