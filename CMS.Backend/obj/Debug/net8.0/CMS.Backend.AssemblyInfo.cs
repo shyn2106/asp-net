@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CMS.Backend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4761fa50a344f57324eede49c30540d4d4eba4f0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4c1694d1711c5c5df01624a262465a3a7401c2a9")]
 [assembly: System.Reflection.AssemblyProductAttribute("CMS.Backend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CMS.Backend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
