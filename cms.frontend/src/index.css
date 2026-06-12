@@ -1,13 +1,117 @@
+:root {
+  --bg-dark: #0a0f1d;
+  --bg-card: #151b2d;
+  --bg-card-hover: #1e263d;
+  --neon-cyan: #06b6d4;
+  --neon-purple: #a855f7;
+  --accent-gold: #f59e0b;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Inter', 'Outfit', sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--text-main);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: 'Outfit', source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+/* Glassmorphism Header */
+.glass-header {
+  background: rgba(10, 15, 29, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Card Hover effect */
+.card-hover-effect {
+  position: relative;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.card-hover-effect:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(6, 182, 212, 0.15) !important;
+  background-color: var(--bg-card-hover) !important;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--neon-cyan);
+}
+
+/* Tech Buttons */
+.btn-cyber {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+  color: #000;
+  border: none;
+  font-weight: 700;
+  transition: all 0.3s ease;
+}
+
+.btn-cyber:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+  color: #fff;
+}
+
+/* Glowing accent borders */
+.glow-border {
+  border: 1px solid rgba(6, 182, 212, 0.2);
+  transition: border 0.3s ease;
+}
+
+.glow-border:focus, .glow-border:hover {
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 10px rgba(6, 182, 212, 0.15);
+  outline: none;
+}
+
+/* Neon text shadows */
+.text-neon-cyan {
+  color: var(--neon-cyan);
+  text-shadow: 0 0 8px rgba(6, 182, 212, 0.3);
+}
+
+.text-neon-purple {
+  color: var(--neon-purple);
+  text-shadow: 0 0 8px rgba(168, 85, 247, 0.3);
+}
+
+/* Multi-line text clamping */
+.text-truncate-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.text-truncate-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }

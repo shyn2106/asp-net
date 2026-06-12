@@ -36,3 +36,13 @@
     transform: rotate(360deg);
   }
 }
+
+
+/* Dark Input Styling */
+.form-control.bg-dark {
+    color: #ffffff !important;
+}
+.form-control.bg-dark::placeholder {
+    color: #adb5bd !important;
+    opacity: 1;
+}

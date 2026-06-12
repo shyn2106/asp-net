@@ -1,15 +1,25 @@
-﻿import axiosClient from "../api/axiosClient";
+import axiosClient from "../api/axiosClient";
 
 const blogService = {
-
-    getBlogCategories: () => {
-        return axiosClient.get("/categories");
-    },
-
     getAllPosts: () => {
         return axiosClient.get("/posts");
+    },
+    
+    getPostById: (id) => {
+        return axiosClient.get(`/posts/${id}`);
+    },
+    
+    createPost: (postData) => {
+        return axiosClient.post("/posts", postData);
+    },
+    
+    updatePost: (id, postData) => {
+        return axiosClient.put(`/posts/${id}`, postData);
+    },
+    
+    deletePost: (id) => {
+        return axiosClient.delete(`/posts/${id}`);
     }
-
 };
 
 export default blogService;

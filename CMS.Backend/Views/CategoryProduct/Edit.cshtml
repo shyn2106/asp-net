@@ -1,0 +1,48 @@
+@model CMS.Data.Entities.CategoryProduct
+
+@{
+    ViewData["Title"] = "Cập nhật danh mục sản phẩm";
+    Layout = "_LayoutAdmin";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-body p-5">
+                    <h2 class="fw-bold mb-4 text-primary">
+                        Cập nhật danh mục
+                    </h2>
+
+                    <form asp-action="Edit" method="post">
+                        <input type="hidden" asp-for="Id" />
+
+                        <!-- NAME -->
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">
+                                Tên danh mục *
+                            </label>
+                            <input asp-for="Name" class="form-control" placeholder="Nhập tên danh mục..." required />
+                            <span asp-validation-for="Name" class="text-danger small"></span>
+                        </div>
+
+                        <!-- DESCRIPTION -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">
+                                Mô tả
+                            </label>
+                            <textarea asp-for="Description" class="form-control" rows="4" placeholder="Nhập mô tả..."></textarea>
+                            <span asp-validation-for="Description" class="text-danger small"></span>
+                        </div>
+
+                        <!-- BUTTONS -->
+                        <div class="d-flex gap-2">
+                            <a asp-action="Index" class="btn btn-secondary w-50 py-2 rounded-pill">Hủy</a>
+                            <button type="submit" class="btn btn-warning text-white w-50 py-2 rounded-pill">Cập nhật</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

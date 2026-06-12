@@ -1,0 +1,8 @@
+.vs/
+[Bb]in/
+[Oo]bj/
+*.py
+*.sql
+results.json
+cms.frontend/node_modules/
+cms.frontend/build/

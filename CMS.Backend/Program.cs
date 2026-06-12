@@ -56,6 +56,17 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 
+// Phục vụ thư mục images của Frontend cho Backend Admin sử dụng chung
+var frontendImagesPath = Path.Combine(builder.Environment.ContentRootPath, "..", "cms.frontend", "public", "images");
+if (Directory.Exists(frontendImagesPath))
+{
+    app.UseStaticFiles(new StaticFileOptions
+    {
+        FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(frontendImagesPath),
+        RequestPath = "/images"
+    });
+}
+
 app.UseRouting();
 
 // =========================
