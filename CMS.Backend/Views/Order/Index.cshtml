@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CMS.Data.Entities.Order>
+@model IEnumerable<CMS.Data.Entities.Order>
 
 @{
     Layout = "_LayoutAdmin";
@@ -52,6 +52,7 @@
                         <th>Customer ID</th>
                         <th>Trạng thái</th>
                         <th>Ghi chú</th>
+                        <th>Thao tác</th>
                     </tr>
                 </thead>
 
@@ -61,8 +62,6 @@
                     {
                         foreach (var item in Model)
                         {
-                            bool completed = item.Status == 1;
-
                             <tr>
 
                                 <td class="fw-bold text-muted">
@@ -78,19 +77,34 @@
                                 </td>
 
                                 <td>
-
-                                    <span class="status-badge @(completed ? "status-success" : "status-pending")">
-
-                                        <i class="fas @(completed ? "fa-circle-check" : "fa-clock") me-1"></i>
-
-                                        @(completed ? "Đã xác nhận" : "Chờ xử lý")
-
-                                    </span>
-
+                                    @if (item.Status == 2)
+                                    {
+                                        <span class="status-badge" style="background:#e8fff3; color:#198754;">
+                                            <i class="fas fa-check-circle me-1"></i> Đã hoàn thành
+                                        </span>
+                                    }
+                                    else if (item.Status == 1)
+                                    {
+                                        <span class="status-badge" style="background:#e0f7fa; color:#0dcaf0;">
+                                            <i class="fas fa-truck me-1"></i> Đang giao
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="status-badge" style="background:#fff4e5; color:#f6c23e;">
+                                            <i class="fas fa-clock me-1"></i> Chờ duyệt
+                                        </span>
+                                    }
                                 </td>
 
                                 <td>
                                     @item.Notes
+                                </td>
+
+                                <td>
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info btn-sm fw-bold rounded-pill shadow-sm px-3">
+                                        <i class="fas fa-eye me-1"></i> Xem chi tiết
+                                    </a>
                                 </td>
 
                             </tr>
@@ -100,7 +114,7 @@
                     {
                         <tr>
 
-                            <td colspan="5"
+                            <td colspan="6"
                                 class="text-center py-5 text-muted">
 
                                 <i class="fas fa-cart-arrow-down fs-1 d-block mb-3"></i>

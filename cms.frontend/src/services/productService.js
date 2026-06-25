@@ -1,12 +1,25 @@
 import axiosClient from "../api/axiosClient";
 
 const productService = {
-    getAllProducts: () => {
-        return axiosClient.get("/products");
+    getAllProducts: async (filters = {}, page = 1, pageSize = 12) => {
+        try {
+            const params = { ...filters, page, pageSize };
+            const response = await axiosClient.get('/Products', { params });
+            return response;
+        } catch (error) {
+            console.error("Lỗi API getAllProducts:", error);
+            throw error;
+        }
     },
-    
-    getProductById: (id) => {
-        return axiosClient.get(`/products/${id}`);
+
+    getProductById: async (id) => {
+        try {
+            const response = await axiosClient.get(`/Products/${id}`);
+            return response.data || response;
+        } catch (error) {
+            console.error(`Lỗi API getProductById với ID ${id}:`, error);
+            throw error;
+        }
     },
     
     createProduct: (productData) => {

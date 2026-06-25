@@ -9,12 +9,12 @@ const HomeSections = ({ onViewDetail, onAddToCart, onViewPost }) => {
 
     const fetchData = async () => {
         try {
-            const [productData, postData] = await Promise.all([
+            const [productRes, postRes] = await Promise.all([
                 productService.getAllProducts(),
                 blogService.getAllPosts()
             ]);
-            setProducts(productData);
-            setPosts(postData);
+            setProducts(productRes.data || productRes);
+            setPosts(postRes.data || postRes);
         } catch (error) {
             console.error("Lỗi tải dữ liệu cho Home:", error);
         } finally {

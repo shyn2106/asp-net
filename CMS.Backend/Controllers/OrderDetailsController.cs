@@ -1,4 +1,4 @@
-﻿
+
 using CMS.Data;
 using CMS.Data.Entities; // Thay thế bằng Namespace chứa Class OrderDetail của bạn
 using Microsoft.AspNetCore.Mvc;
@@ -75,6 +75,16 @@ namespace CMS.Backend.Controllers
         {
             if (model == null) return BadRequest(new { message = "Dữ liệu gửi lên không hợp lệ." });
             if (model.Quantity <= 0) return BadRequest(new { message = "Số lượng phải lớn hơn 0." });
+
+            var product = _context.Products.Find(model.ProductId);
+            if (product == null) return NotFound(new { message = "Sản phẩm không tồn tại." });
+
+            if (product.StockQuantity < model.Quantity)
+            {
+                return BadRequest(new { message = $"Sản phẩm {product.Name} không đủ số lượng trong kho." });
+            }
+
+            product.StockQuantity -= model.Quantity;
 
             // Tránh lỗi EF Core hiểu lầm tạo mới Object liên quan
             model.Order = null;

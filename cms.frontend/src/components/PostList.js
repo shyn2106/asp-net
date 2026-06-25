@@ -6,27 +6,29 @@ function PostList() {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedPost, setSelectedPost] = useState(null);
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
         fetchPosts();
-    }, []);
+    }, [page]);
 
     const fetchPosts = async () => {
         try {
-
-            const data = await blogService.getAllPosts();
-
-            setPosts(data);
-
+            setLoading(true);
+            const response = await blogService.getAllPosts(page, 6);
+            setPosts(response.data || response);
+            setTotalPages(response.totalPages || 1);
         } catch (error) {
-
             console.error("Lỗi tải bài viết:", error);
-
         } finally {
-
             setLoading(false);
-
         }
+    };
+
+    const handlePageChange = (newPage) => {
+        setPage(newPage);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     if (loading) {
@@ -129,6 +131,25 @@ function PostList() {
                     </div>
                 ))}
             </div>
+
+            {/* Phân trang */}
+            {totalPages > 1 && (
+                <nav aria-label="Page navigation" className="mt-5 d-flex justify-content-center">
+                    <ul className="pagination">
+                        <li className={`page-item ${page === 1 ? 'disabled' : ''}`}>
+                            <button className="page-link" onClick={() => handlePageChange(page - 1)}>Trang trước</button>
+                        </li>
+                        {[...Array(totalPages)].map((_, i) => (
+                            <li key={i} className={`page-item ${page === i + 1 ? 'active' : ''}`}>
+                                <button className="page-link" onClick={() => handlePageChange(i + 1)}>{i + 1}</button>
+                            </li>
+                        ))}
+                        <li className={`page-item ${page === totalPages ? 'disabled' : ''}`}>
+                            <button className="page-link" onClick={() => handlePageChange(page + 1)}>Trang sau</button>
+                        </li>
+                    </ul>
+                </nav>
+            )}
         </div>
     );
 }

@@ -1,8 +1,8 @@
 import axiosClient from "../api/axiosClient";
 
 const blogService = {
-    getAllPosts: () => {
-        return axiosClient.get("/posts");
+    getAllPosts: (page = 1, pageSize = 6) => {
+        return axiosClient.get("/posts", { params: { page, pageSize } });
     },
     
     getPostById: (id) => {

@@ -12,7 +12,7 @@ const ProductList = ({ selectedCategoryId, searchQuery, priceRange, onViewDetail
     const fetchProducts = async () => {
         try {
             const data = await productService.getAllProducts();
-            setProducts(data);
+            setProducts(data.data || data); // handle new pagination structure
         } catch (error) {
             console.error("Lỗi tải sản phẩm:", error);
         } finally {

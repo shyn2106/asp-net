@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CMS.Data.Entities.OrderDetail>
+@model IEnumerable<CMS.Data.Entities.OrderDetail>
 
 @{
     Layout = "_LayoutAdmin";
@@ -40,12 +40,13 @@
 
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Order ID</th>
-                        <th>Product ID</th>
+                        <th>Mã C.Tiết</th>
+                        <th>Khách hàng</th>
+                        <th>Sản phẩm</th>
                         <th>Số lượng</th>
                         <th>Đơn giá</th>
                         <th>Thành tiền</th>
+                        <th class="text-center">Thao tác</th>
                     </tr>
                 </thead>
 
@@ -64,11 +65,12 @@
                                 </td>
 
                                 <td>
-                                    ORD-@item.OrderId
+                                    <div class="fw-bold">@item.Order?.Customer?.FullName</div>
+                                    <div class="small text-muted">ĐH: #@item.OrderId</div>
                                 </td>
 
                                 <td>
-                                    PRD-@item.ProductId
+                                    <div class="fw-bold text-dark">@(item.Product?.Name ?? "Sản phẩm không tồn tại")</div>
                                 </td>
 
                                 <td>
@@ -83,6 +85,12 @@
                                     @total.ToString("N0") ₫
                                 </td>
 
+                                <td class="text-center">
+                                    <a asp-controller="OrderDetail" asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info rounded-pill px-3 shadow-sm">
+                                        <i class="fas fa-eye me-1"></i> Xem chi tiết
+                                    </a>
+                                </td>
+
                             </tr>
                         }
                     }
@@ -90,7 +98,7 @@
                     {
                         <tr>
 
-                            <td colspan="6"
+                            <td colspan="7"
                                 class="text-center py-5 text-muted">
 
                                 <i class="fas fa-receipt fs-1 d-block mb-3"></i>

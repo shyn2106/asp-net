@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CMS.Data;
 using CMS.Data.Entities;
@@ -21,12 +21,45 @@ namespace CMS.Backend.Controllers
         // api/products
         // =========================
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll(
+            [FromQuery] int? categoryProductId,
+            [FromQuery] decimal? minPrice,
+            [FromQuery] decimal? maxPrice,
+            [FromQuery] string? keyword,
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 12)
         {
-            var products = _context.Products
-                .Include(p => p.CategoryProduct)
-                .OrderByDescending(p => p.Id)
-                .Select(p => new
+            try
+            {
+                var query = _context.Products.Include(p => p.CategoryProduct).AsQueryable();
+
+                if (categoryProductId.HasValue)
+                {
+                    query = query.Where(p => p.CategoryProductId == categoryProductId.Value);
+                }
+
+                if (minPrice.HasValue)
+                {
+                    query = query.Where(p => p.Price >= minPrice.Value);
+                }
+
+                if (maxPrice.HasValue)
+                {
+                    query = query.Where(p => p.Price <= maxPrice.Value);
+                }
+
+                if (!string.IsNullOrEmpty(keyword))
+                {
+                    query = query.Where(p => p.Name.Contains(keyword.Trim()));
+                }
+
+                int totalItems = await query.CountAsync();
+                int totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
+
+                var result = await query.OrderByDescending(p => p.Id)
+                                        .Skip((page - 1) * pageSize)
+                                        .Take(pageSize)
+                                        .Select(p => new
                 {
                     p.Id,
                     p.Name,
@@ -35,12 +68,22 @@ namespace CMS.Backend.Controllers
                     p.StockQuantity,
                     p.ImageUrl,
                     p.CategoryProductId,
-
                     CategoryName = p.CategoryProduct.Name
-                })
-                .ToList();
+                }).ToListAsync();
 
-            return Ok(products);
+                return Ok(new
+                {
+                    data = result,
+                    totalItems,
+                    totalPages,
+                    page,
+                    pageSize
+                });
+            }
+            catch (System.Exception ex)
+            {
+                return StatusCode(500, $"Lỗi hệ thống SQL Server: {ex.Message}");
+            }
         }
 
         // =========================
@@ -48,9 +91,9 @@ namespace CMS.Backend.Controllers
         // api/products/1
         // =========================
         [HttpGet("{id}")]
-        public IActionResult GetDetail(int id)
+        public async Task<IActionResult> GetDetail(int id)
         {
-            var product = _context.Products
+            var product = await _context.Products
                 .Include(p => p.CategoryProduct)
                 .Where(p => p.Id == id)
                 .Select(p => new
@@ -62,17 +105,13 @@ namespace CMS.Backend.Controllers
                     p.StockQuantity,
                     p.ImageUrl,
                     p.CategoryProductId,
-
                     CategoryName = p.CategoryProduct.Name
                 })
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
 
             if (product == null)
             {
-                return NotFound(new
-                {
-                    message = "Không tìm thấy sản phẩm"
-                });
+                return NotFound(new { message = "Không tìm thấy sản phẩm này trong hệ thống" });
             }
 
             return Ok(product);

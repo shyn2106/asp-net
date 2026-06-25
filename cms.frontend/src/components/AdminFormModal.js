@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 function AdminFormModal({ type, item, categoriesList, onClose, onSave }) {
     const [formData, setFormData] = useState({});
@@ -108,7 +110,16 @@ function AdminFormModal({ type, item, categoriesList, onClose, onSave }) {
                                     </div>
                                     <div className="mb-2">
                                         <label className="form-label text-muted small">Mô tả sản phẩm</label>
-                                        <textarea name="description" className="form-control bg-dark border-0 text-white rounded-3 py-2 glow-border" rows="3" value={formData.description || ""} onChange={handleChange}></textarea>
+                                        <div className="text-dark">
+                                            <CKEditor
+                                                editor={ClassicEditor}
+                                                data={formData.description || ""}
+                                                onChange={(event, editor) => {
+                                                    const data = editor.getData();
+                                                    setFormData(prev => ({ ...prev, description: data }));
+                                                }}
+                                            />
+                                        </div>
                                     </div>
                                 </>
                             )}
@@ -122,7 +133,16 @@ function AdminFormModal({ type, item, categoriesList, onClose, onSave }) {
                                     </div>
                                     <div className="mb-2">
                                         <label className="form-label text-muted small">Mô tả danh mục</label>
-                                        <textarea name="description" className="form-control bg-dark border-0 text-white rounded-3 py-2 glow-border" rows="3" value={formData.description || ""} onChange={handleChange}></textarea>
+                                        <div className="text-dark">
+                                            <CKEditor
+                                                editor={ClassicEditor}
+                                                data={formData.description || ""}
+                                                onChange={(event, editor) => {
+                                                    const data = editor.getData();
+                                                    setFormData(prev => ({ ...prev, description: data }));
+                                                }}
+                                            />
+                                        </div>
                                     </div>
                                 </>
                             )}
@@ -144,7 +164,16 @@ function AdminFormModal({ type, item, categoriesList, onClose, onSave }) {
                                     </div>
                                     <div className="mb-2">
                                         <label className="form-label text-muted small">Nội dung chi tiết *</label>
-                                        <textarea name="content" className="form-control bg-dark border-0 text-white rounded-3 py-2 glow-border" rows="4" required value={formData.content || ""} onChange={handleChange}></textarea>
+                                        <div className="text-dark">
+                                            <CKEditor
+                                                editor={ClassicEditor}
+                                                data={formData.content || ""}
+                                                onChange={(event, editor) => {
+                                                    const data = editor.getData();
+                                                    setFormData(prev => ({ ...prev, content: data }));
+                                                }}
+                                            />
+                                        </div>
                                     </div>
                                 </>
                             )}
