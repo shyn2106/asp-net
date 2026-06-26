@@ -3,7 +3,8 @@ import React from 'react';
 // IMPORT ĐỦ TẦNG THEO ĐÚNG THỨ TỰ HƯỚNG DẪN CỦA GV (Lưu ý: Header/Footer đã được dời ra App.js)
 import HeroBanner from './HeroBanner';
 import CategoryMenu from './CategoryMenu';
-import ProductGrid from './ProductGrid';
+import HotProducts from './HotProducts';
+import LatestProducts from './LatestProducts';
 import LatestBlog from './LatestBlog';
 
 function Home() {
@@ -58,10 +59,13 @@ function Home() {
                 </div>
             </div>
 
-            {/* TẦNG 4: Lưới hiển thị danh sách sản phẩm thời trang */}
-            <ProductGrid />
+            {/* TẦNG 4: Lưới hiển thị các sản phẩm mới nhất */}
+            <LatestProducts />
 
-            {/* TẦNG 5: Khối hiển thị các bài viết tin tức */}
+            {/* TẦNG 5: Lưới hiển thị danh sách sản phẩm bán chạy (Hot) */}
+            <HotProducts />
+
+            {/* TẦNG 6: Khối hiển thị các bài viết tin tức */}
             <LatestBlog />
         </div>
     );

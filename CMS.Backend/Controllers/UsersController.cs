@@ -1,4 +1,4 @@
-﻿using CMS.Data;
+using CMS.Data;
 using CMS.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,9 +18,34 @@ namespace CMS.Backend.Controllers
 
         // GET: api/users
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll(
+            [FromQuery] string? keyword,
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 10)
         {
-            return Ok(_context.Users.ToList());
+            var query = _context.Users.AsQueryable();
+
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                query = query.Where(u => u.FullName.Contains(keyword) || u.Username.Contains(keyword));
+            }
+
+            int totalItems = await query.CountAsync();
+            int totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
+
+            var items = await query.OrderByDescending(u => u.Id)
+                                   .Skip((page - 1) * pageSize)
+                                   .Take(pageSize)
+                                   .ToListAsync();
+
+            return Ok(new
+            {
+                items,
+                totalPages,
+                totalItems,
+                currentPage = page,
+                pageSize
+            });
         }
 
         // GET: api/users/1
@@ -50,6 +75,7 @@ namespace CMS.Backend.Controllers
                 });
             }
 
+            model.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.PasswordHash);
             _context.Users.Add(model);
             _context.SaveChanges();
 
@@ -71,7 +97,14 @@ namespace CMS.Backend.Controllers
 
             user.FullName = model.FullName;
             user.Username = model.Username;
-            user.PasswordHash = model.PasswordHash;
+            if (!string.IsNullOrEmpty(model.PasswordHash) && !model.PasswordHash.StartsWith("$2"))
+            {
+                user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.PasswordHash);
+            }
+            else if (!string.IsNullOrEmpty(model.PasswordHash))
+            {
+                user.PasswordHash = model.PasswordHash;
+            }
             user.Role = model.Role;
 
             _context.SaveChanges();

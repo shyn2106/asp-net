@@ -17,8 +17,9 @@ function PostList() {
         try {
             setLoading(true);
             const response = await blogService.getAllPosts(page, 6);
-            setPosts(response.data || response);
-            setTotalPages(response.totalPages || 1);
+            let data = response.data || response;
+            setPosts(data.items || data);
+            setTotalPages(data.totalPages || 1);
         } catch (error) {
             console.error("Lỗi tải bài viết:", error);
         } finally {

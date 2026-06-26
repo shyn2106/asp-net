@@ -30,6 +30,24 @@ function Shop() {
         keyword: initialKeyword
     });
 
+    // Theo dõi thay đổi của URL Params (ví dụ khi gõ tìm kiếm từ Header)
+    useEffect(() => {
+        const catId = searchParams.get("categoryId") ? parseInt(searchParams.get("categoryId")) : null;
+        const kw = searchParams.get("keyword") || '';
+        
+        setFilters(prev => {
+            // Chỉ cập nhật nếu thực sự có sự thay đổi từ URL để tránh render loop
+            if (prev.categoryProductId !== catId || prev.keyword !== kw) {
+                return {
+                    ...prev,
+                    categoryProductId: catId !== null ? catId : prev.categoryProductId,
+                    keyword: kw
+                };
+            }
+            return prev;
+        });
+    }, [searchParams]);
+
     // useEffect theo dõi biến [filters, page]. Cứ khi nào 1 trong các ô lọc thay đổi hoặc trang đổi -> API tự gọi ngầm
     useEffect(() => {
         const fetchFilterProducts = async () => {

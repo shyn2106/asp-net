@@ -8,10 +8,16 @@ function Profile() {
     
     const [customer, setCustomer] = useState(initialCustomer);
     const [isEditing, setIsEditing] = useState(false);
+    const [isChangingPassword, setIsChangingPassword] = useState(false);
     const [formData, setFormData] = useState({
         fullName: initialCustomer?.fullName || '',
         phone: initialCustomer?.phone || '',
         address: initialCustomer?.address || ''
+    });
+    const [passwordData, setPasswordData] = useState({
+        oldPassword: '',
+        newPassword: '',
+        confirmPassword: ''
     });
 
     const [stats, setStats] = useState({
@@ -47,6 +53,30 @@ function Profile() {
         } catch (error) {
             console.error("Lỗi cập nhật hồ sơ:", error);
             alert("❌ Lỗi khi cập nhật hồ sơ: " + (error.response?.data?.message || "Vui lòng thử lại"));
+        }
+    };
+
+    const handleChangePassword = async (e) => {
+        e.preventDefault();
+        if (passwordData.newPassword !== passwordData.confirmPassword) {
+            alert("⛔ Mật khẩu xác nhận không khớp!");
+            return;
+        }
+
+        try {
+            const data = {
+                customerId: customer.id,
+                oldPassword: passwordData.oldPassword,
+                newPassword: passwordData.newPassword
+            };
+            const response = await authService.changePassword(data);
+            alert(`🎉 ${response.message || 'Đổi mật khẩu thành công!'}`);
+            setIsChangingPassword(false);
+            setPasswordData({ oldPassword: '', newPassword: '', confirmPassword: '' });
+        } catch (error) {
+            console.error("Lỗi đổi mật khẩu:", error);
+            const msg = error.response?.data?.message || "Đã xảy ra lỗi. Vui lòng thử lại.";
+            alert(`⛔ ĐỔI MẬT KHẨU THẤT BẠI: ${msg}`);
         }
     };
 
@@ -208,7 +238,11 @@ function Profile() {
                                     </button>
                                 </div>
                                 <div className="col-sm-6">
-                                    <button className="btn btn-outline-secondary text-white w-100 py-2 fw-bold" style={{ borderRadius: '8px', border: '1px solid rgba(255,255,255,0.2)' }}>
+                                    <button 
+                                        className="btn btn-outline-secondary text-white w-100 py-2 fw-bold" 
+                                        style={{ borderRadius: '8px', border: '1px solid rgba(255,255,255,0.2)' }}
+                                        onClick={() => setIsChangingPassword(true)}
+                                    >
                                         <i className="bi bi-shield-lock me-2"></i> Đổi mật khẩu
                                     </button>
                                 </div>
@@ -254,6 +288,35 @@ function Profile() {
                                 <button type="button" className="btn btn-outline-secondary w-50" onClick={() => setIsEditing(false)}>Hủy bỏ</button>
                                 <button type="submit" className="btn btn-info w-50 fw-bold">Lưu thay đổi</button>
                             </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+            {/* Change Password Modal Overlay */}
+            {isChangingPassword && (
+                <div className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style={{ backgroundColor: 'rgba(0,0,0,0.8)', zIndex: 1050 }}>
+                    <div className="card border-0 shadow-lg p-4" style={{ backgroundColor: '#1A2235', borderRadius: '15px', width: '100%', maxWidth: '450px', border: '1px solid #FF3B5C' }}>
+                        <div className="d-flex justify-content-between align-items-center mb-4">
+                            <h4 className="fw-bold text-danger mb-0">Đổi Mật Khẩu</h4>
+                            <button className="btn-close btn-close-white" onClick={() => setIsChangingPassword(false)}></button>
+                        </div>
+                        <form onSubmit={handleChangePassword}>
+                            <div className="mb-3">
+                                <label className="form-label text-white-50 small">Mật khẩu cũ</label>
+                                <input type="password" className="form-control text-white" style={{ backgroundColor: '#0f172a', borderColor: '#334155' }} value={passwordData.oldPassword} onChange={(e) => setPasswordData({...passwordData, oldPassword: e.target.value})} required />
+                            </div>
+                            <div className="mb-3">
+                                <label className="form-label text-white-50 small">Mật khẩu mới</label>
+                                <input type="password" className="form-control text-white" style={{ backgroundColor: '#0f172a', borderColor: '#334155' }} value={passwordData.newPassword} onChange={(e) => setPasswordData({...passwordData, newPassword: e.target.value})} required />
+                            </div>
+                            <div className="mb-4">
+                                <label className="form-label text-white-50 small">Xác nhận mật khẩu mới</label>
+                                <input type="password" className="form-control text-white" style={{ backgroundColor: '#0f172a', borderColor: '#334155' }} value={passwordData.confirmPassword} onChange={(e) => setPasswordData({...passwordData, confirmPassword: e.target.value})} required />
+                            </div>
+                            <button type="submit" className="btn btn-danger w-100 py-2 fw-bold" style={{ borderRadius: '8px' }}>
+                                LƯU MẬT KHẨU
+                            </button>
                         </form>
                     </div>
                 </div>

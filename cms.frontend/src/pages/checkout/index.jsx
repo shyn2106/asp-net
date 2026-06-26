@@ -31,7 +31,10 @@ const Checkout = () => {
             if (loggedInCustomer) {
                 customerId = loggedInCustomer.id;
             } else {
-                const allCustomers = await customerService.getAllCustomers();
+                let allCustomers = await customerService.getAllCustomers();
+                if (allCustomers && allCustomers.items) allCustomers = allCustomers.items;
+                else if (!Array.isArray(allCustomers)) allCustomers = [];
+
                 let customer = allCustomers.find(c => c.email.toLowerCase() === checkoutForm.email.toLowerCase());
 
                 if (customer) {
@@ -46,7 +49,10 @@ const Checkout = () => {
                     };
                     await customerService.createCustomer(newCustData);
 
-                    const updatedCustomers = await customerService.getAllCustomers();
+                    let updatedCustomers = await customerService.getAllCustomers();
+                    if (updatedCustomers && updatedCustomers.items) updatedCustomers = updatedCustomers.items;
+                    else if (!Array.isArray(updatedCustomers)) updatedCustomers = [];
+
                     const freshCustomer = updatedCustomers.find(c => c.email.toLowerCase() === checkoutForm.email.toLowerCase());
                     customerId = freshCustomer ? freshCustomer.id : updatedCustomers[updatedCustomers.length - 1].id;
                 }
@@ -55,32 +61,17 @@ const Checkout = () => {
             const newOrderData = {
                 CustomerId: customerId,
                 Status: 0,
-                Notes: checkoutForm.notes || "Đặt hàng từ G-ZONE Web"
-            };
-            await orderService.createOrder(newOrderData);
-
-            const allOrders = await orderService.getAllOrders();
-            const customerOrders = allOrders
-                .filter(o => o.customerId === customerId || o.customerName === checkoutForm.fullName)
-                .sort((a, b) => b.id - a.id);
-
-            const newOrderId = customerOrders.length > 0 ? customerOrders[0].id : allOrders[allOrders.length - 1].id;
-
-            for (const item of cart) {
-                const detailRecord = {
-                    OrderId: newOrderId,
+                Notes: checkoutForm.notes || "Đặt hàng từ G-ZONE Web",
+                OrderDetails: cart.map(item => ({
                     ProductId: item.id,
                     Quantity: item.quantity,
                     UnitPrice: item.price
-                };
-                
-                try {
-                    await orderService.createOrderDetail(detailRecord);
-                } catch (err) {
-                    const errorMsg = err.response?.data?.message || `Lỗi khi thanh toán sản phẩm ${item.name}.`;
-                    throw new Error(errorMsg);
-                }
-            }
+                }))
+            };
+            const response = await orderService.createOrder(newOrderData);
+            
+            // Lấy orderId từ response của backend
+            const newOrderId = response.data?.orderId || response.data?.id || 0;
 
             setPlacedOrderId(newOrderId);
             setOrderSuccess(true);
@@ -155,6 +146,20 @@ const Checkout = () => {
                                 <label className="form-label text-white-50 small">Ghi Chú Đơn Hàng (Tùy chọn)</label>
                                 <textarea className="form-control bg-dark text-white border-secondary" rows="3"
                                     value={checkoutForm.notes} onChange={e => setCheckoutForm({ ...checkoutForm, notes: e.target.value })}></textarea>
+                            </div>
+
+                            <div className="mb-4">
+                                <label className="form-label text-white-50 small">Phương Thức Thanh Toán</label>
+                                <div className="border border-secondary rounded p-3 bg-dark">
+                                    <div className="form-check">
+                                        <input className="form-check-input bg-info border-info" type="radio" name="paymentMethod" id="paymentCOD" value="COD" checked readOnly />
+                                        <label className="form-check-label text-white d-flex align-items-center" htmlFor="paymentCOD">
+                                            <i className="bi bi-cash-stack text-success fs-5 me-2"></i>
+                                            Thanh toán khi nhận hàng (COD)
+                                        </label>
+                                    </div>
+                                </div>
+                                <small className="text-white-50 mt-2 d-block fst-italic">* Bạn sẽ thanh toán bằng tiền mặt cho người giao hàng.</small>
                             </div>
                             
                             <button type="submit" className="btn w-100 rounded-pill fw-bold text-dark py-3" style={{ background: "linear-gradient(90deg, #06b6d4, #a855f7)" }} disabled={checkoutLoading}>

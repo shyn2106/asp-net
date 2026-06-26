@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AppContext } from '../context/AppContext';
 
-const ProductCard = ({ item, isHot = false, onAddToCart }) => {
+const ProductCard = ({ item, isHot = false, onAddToCart, wrapperClass = "col-md-6 col-lg-3 mb-4" }) => {
     const navigate = useNavigate();
+    const { cart } = useContext(AppContext);
 
     const getTechImage = (name = "") => {
         const lowerName = name.toLowerCase();
@@ -27,7 +29,7 @@ const ProductCard = ({ item, isHot = false, onAddToCart }) => {
     const originalPrice = item.price * 1.15;
 
     return (
-        <div className="col-md-6 col-lg-3 mb-4">
+        <div className={wrapperClass}>
             <div 
                 className="card h-100 border-0 shadow-lg text-white card-hover-effect position-relative" 
                 style={{ 
@@ -102,7 +104,16 @@ const ProductCard = ({ item, isHot = false, onAddToCart }) => {
                                     opacity: item.stockQuantity > 0 ? 1 : 0.6
                                 }}
                                 disabled={item.stockQuantity <= 0}
-                                onClick={() => onAddToCart(item)}
+                                onClick={() => {
+                                    const cartItem = cart.find(i => i.id === item.id);
+                                    const currentQtyInCart = cartItem ? cartItem.quantity : 0;
+                                    
+                                    if (currentQtyInCart + 1 > item.stockQuantity) {
+                                        alert("Số lượng sản phẩm trong kho không đủ!");
+                                        return;
+                                    }
+                                    onAddToCart(item);
+                                }}
                             >
                                 <i className="bi bi-cart-plus-fill"></i> Mua
                             </button>

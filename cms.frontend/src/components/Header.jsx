@@ -1,10 +1,48 @@
-import React, { useContext } from 'react';
-import { NavLink, useNavigate, Link } from 'react-router-dom';
+import React, { useContext, useState, useEffect } from 'react';
+import { NavLink, useNavigate, Link, useLocation } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
 
 const Header = () => {
     const { loggedInCustomer, handleLogout, setAuthTab, setShowAuthModal, cartCount } = useContext(AppContext);
     const navigate = useNavigate();
+    const location = useLocation();
+
+    // State cho ô tìm kiếm
+    const [searchTerm, setSearchTerm] = useState('');
+    
+    // State cho hiệu ứng giỏ hàng
+    const [cartAnimate, setCartAnimate] = useState(false);
+
+    // Kích hoạt hiệu ứng "nảy" (bounce) khi số lượng giỏ hàng thay đổi
+    useEffect(() => {
+        if (cartCount > 0) {
+            setCartAnimate(true);
+            const timer = setTimeout(() => setCartAnimate(false), 300);
+            return () => clearTimeout(timer);
+        }
+    }, [cartCount]);
+
+    // Debounce tìm kiếm: chờ 500ms sau khi ngừng gõ mới điều hướng
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            // Chỉ tìm kiếm nếu đang gõ (tránh việc render lần đầu tự navigate)
+            if (searchTerm !== '') {
+                navigate(`/shop?keyword=${encodeURIComponent(searchTerm.trim())}`);
+            } else if (searchTerm === '' && location.pathname === '/shop' && new URLSearchParams(location.search).has('keyword')) {
+                // Nếu xóa trắng ô tìm kiếm và đang ở trang shop, xóa param keyword
+                navigate(`/shop`);
+            }
+        }, 500);
+
+        return () => clearTimeout(timer);
+    }, [searchTerm, navigate]);
+
+    // Xóa ô tìm kiếm nếu chuyển sang trang khác không phải shop
+    useEffect(() => {
+        if (!location.pathname.includes('/shop')) {
+            setSearchTerm('');
+        }
+    }, [location.pathname]);
 
     return (
         <nav className="navbar navbar-expand-lg sticky-top premium-navbar">
@@ -48,9 +86,8 @@ const Header = () => {
                             className="premium-search-container"
                             onSubmit={(e) => {
                                 e.preventDefault();
-                                const keyword = e.target.elements.searchKeyword.value;
-                                if (keyword.trim()) {
-                                    navigate(`/shop?keyword=${encodeURIComponent(keyword.trim())}`);
+                                if (searchTerm.trim()) {
+                                    navigate(`/shop?keyword=${encodeURIComponent(searchTerm.trim())}`);
                                 }
                             }}
                         >
@@ -59,6 +96,8 @@ const Header = () => {
                                 name="searchKeyword"
                                 className="premium-search-input" 
                                 placeholder="Tìm kiếm laptop, gear, màn hình..." 
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
                             />
                             <button className="premium-search-icon" type="submit">
                                 <i className="bi bi-search fw-bold"></i>
@@ -127,7 +166,10 @@ const Header = () => {
                             <NavLink to="/cart" className="premium-cart-btn" title="Giỏ hàng">
                                 <i className="bi bi-cart3 fs-5"></i>
                                 {cartCount > 0 && (
-                                    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style={{ fontSize: "0.7rem", fontFamily: "Rajdhani, sans-serif" }}>
+                                    <span 
+                                        className={`position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger ${cartAnimate ? 'cart-bounce' : ''}`} 
+                                        style={{ fontSize: "0.7rem", fontFamily: "Rajdhani, sans-serif", transition: 'all 0.3s' }}
+                                    >
                                         {cartCount}
                                     </span>
                                 )}

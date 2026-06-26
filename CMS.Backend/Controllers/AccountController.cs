@@ -1,4 +1,4 @@
-﻿using CMS.Data;
+using CMS.Data;
 using Microsoft.AspNetCore.Mvc;
 
 using Microsoft.AspNetCore.Authentication;
@@ -33,34 +33,51 @@ namespace CMS.Backend.Controllers
         public async Task<IActionResult> Login(string username, string password)
         {
             // Kiểm tra tài khoản
-            var user = _context.Users
-                .FirstOrDefault(u =>
-                    u.Username == username &&
-                    u.PasswordHash == password);
+            var users = _context.Users
+                .Where(u => u.Username == username)
+                .ToList();
 
-            if (user != null)
+            foreach (var user in users)
             {
-                // Tạo Claims
-                var claims = new List<Claim>
+                bool isValid = false;
+                if (!string.IsNullOrEmpty(user.PasswordHash) && user.PasswordHash.StartsWith("$2"))
                 {
-                    new Claim(ClaimTypes.Name, user.Username),
-                    new Claim(ClaimTypes.Role, user.Role),
-                    new Claim("FullName", user.FullName)
-                };
+                    isValid = BCrypt.Net.BCrypt.Verify(password, user.PasswordHash);
+                }
+                else
+                {
+                    isValid = (user.PasswordHash == password);
+                    if (isValid)
+                    {
+                        user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(password);
+                        _context.SaveChanges();
+                    }
+                }
 
-                // Identity
-                var claimsIdentity = new ClaimsIdentity(
-                    claims,
-                    CookieAuthenticationDefaults.AuthenticationScheme
-                );
+                if (isValid)
+                {
+                    // Tạo Claims
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, user.Username),
+                        new Claim(ClaimTypes.Role, user.Role),
+                        new Claim("FullName", user.FullName)
+                    };
 
-                // Login
-                await HttpContext.SignInAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(claimsIdentity)
-                );
+                    // Identity
+                    var claimsIdentity = new ClaimsIdentity(
+                        claims,
+                        CookieAuthenticationDefaults.AuthenticationScheme
+                    );
 
-                return RedirectToAction("Index", "Home");
+                    // Login
+                    await HttpContext.SignInAsync(
+                        CookieAuthenticationDefaults.AuthenticationScheme,
+                        new ClaimsPrincipal(claimsIdentity)
+                    );
+
+                    return RedirectToAction("Index", "Home");
+                }
             }
 
             ViewBag.Error = "Sai tài khoản hoặc mật khẩu!";

@@ -22,12 +22,25 @@ const AuthModal = () => {
                 localStorage.setItem("gzone_customer", JSON.stringify(res.customer));
                 setShowAuthModal(false);
                 alert(res.message || "Đăng nhập thành công!");
-            } else {
+            } else if (authTab === "register") {
                 const res = await customerAuthService.register(authForm);
                 setLoggedInCustomer(res.customer);
                 localStorage.setItem("gzone_customer", JSON.stringify(res.customer));
                 setShowAuthModal(false);
                 alert(res.message || "Đăng ký thành công!");
+            } else if (authTab === "forgot") {
+                const res = await customerAuthService.forgotPassword(authForm.email);
+                
+                // Nếu Backend chạy thực tế và gửi mail thành công, res.message sẽ chứa thông báo gửi mail.
+                // Nếu lỗi SMTP (do chưa config App Password), backend sẽ trả về message + temporaryPassword
+                if (res.temporaryPassword) {
+                    alert(`${res.message}\n\nMật khẩu tạm thời của bạn là: ${res.temporaryPassword}\n\n(Vui lòng thay thông tin App Password trong Backend để gửi Email thật)`);
+                } else {
+                    alert(res.message || "Mật khẩu mới đã được gửi đến Email của bạn.");
+                }
+                
+                // Trở về trang đăng nhập
+                setAuthTab("login");
             }
         } catch (error) {
             console.error("Lỗi xác thực:", error);
@@ -47,17 +60,24 @@ const AuthModal = () => {
                         <div className="d-flex w-100 gap-3 border-bottom border-secondary border-opacity-25 pb-2">
                             <span 
                                 className={`fw-bold cursor-pointer pb-2 ${authTab === "login" ? "text-info border-bottom border-info border-2" : "text-white-50"}`}
-                                style={{ cursor: "pointer" }}
+                                style={{ cursor: "pointer", fontSize: "0.95rem" }}
                                 onClick={() => setAuthTab("login")}
                             >
                                 Đăng Nhập
                             </span>
                             <span 
                                 className={`fw-bold cursor-pointer pb-2 ${authTab === "register" ? "text-info border-bottom border-info border-2" : "text-white-50"}`}
-                                style={{ cursor: "pointer" }}
+                                style={{ cursor: "pointer", fontSize: "0.95rem" }}
                                 onClick={() => setAuthTab("register")}
                             >
                                 Đăng Ký
+                            </span>
+                            <span 
+                                className={`fw-bold cursor-pointer pb-2 ${authTab === "forgot" ? "text-danger border-bottom border-danger border-2" : "text-white-50"}`}
+                                style={{ cursor: "pointer", fontSize: "0.95rem" }}
+                                onClick={() => setAuthTab("forgot")}
+                            >
+                                Quên MK
                             </span>
                         </div>
                         <button type="button" className="btn-close btn-close-white position-absolute top-0 end-0 m-3" onClick={() => setShowAuthModal(false)}></button>
@@ -100,6 +120,12 @@ const AuthModal = () => {
                                 </>
                             )}
                             
+                            {authTab === "forgot" && (
+                                <p className="text-white-50 small mb-3 text-center">
+                                    Nhập Email của bạn để nhận mật khẩu khôi phục qua hòm thư.
+                                </p>
+                            )}
+                            
                             <div className="mb-3">
                                 <input
                                     type="email"
@@ -110,26 +136,43 @@ const AuthModal = () => {
                                     onChange={(e) => setAuthForm({ ...authForm, email: e.target.value })}
                                 />
                             </div>
-                            <div className="mb-4">
-                                <input
-                                    type="password"
-                                    placeholder="Mật khẩu"
-                                    className="form-control bg-dark border-0 text-white rounded-3 py-2 glow-border"
-                                    required
-                                    value={authForm.password}
-                                    onChange={(e) => setAuthForm({ ...authForm, password: e.target.value })}
-                                />
-                            </div>
+                            
+                            {authTab !== "forgot" && (
+                                <div className="mb-4">
+                                    <input
+                                        type="password"
+                                        placeholder="Mật khẩu"
+                                        className="form-control bg-dark border-0 text-white rounded-3 py-2 glow-border"
+                                        required
+                                        value={authForm.password}
+                                        onChange={(e) => setAuthForm({ ...authForm, password: e.target.value })}
+                                    />
+                                    {authTab === "login" && (
+                                        <div className="text-end mt-2">
+                                            <span 
+                                                className="text-white-50 small cursor-pointer text-decoration-underline" 
+                                                style={{ cursor: "pointer", transition: "color 0.3s ease" }}
+                                                onMouseOver={(e) => e.target.style.color = "#00D4FF"}
+                                                onMouseOut={(e) => e.target.style.color = "rgba(255,255,255,0.5)"}
+                                                onClick={() => setAuthTab("forgot")}
+                                            >
+                                                Quên mật khẩu?
+                                            </span>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
 
                             <button
                                 type="submit"
-                                className="btn btn-cyber w-100 py-2 rounded-pill fw-bold text-dark font-monospace mb-2"
+                                className={`btn w-100 py-2 rounded-pill fw-bold text-dark font-monospace mb-2 ${authTab === 'forgot' ? 'btn-danger text-white' : 'btn-cyber'}`}
                                 disabled={authLoading}
+                                style={authTab === 'forgot' ? { background: "linear-gradient(90deg, #FF3B5C, #f59e0b)", border: "none" } : {}}
                             >
                                 {authLoading ? (
                                     <span className="spinner-border spinner-border-sm me-2" role="status"></span>
                                 ) : null}
-                                {authTab === "login" ? "XÁC NHẬN ĐĂNG NHẬP" : "TẠO TÀI KHOẢN"}
+                                {authTab === "login" ? "XÁC NHẬN ĐĂNG NHẬP" : authTab === "register" ? "TẠO TÀI KHOẢN" : "GỬI YÊU CẦU"}
                             </button>
                         </form>
                     </div>

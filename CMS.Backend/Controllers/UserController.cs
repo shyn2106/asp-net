@@ -1,4 +1,4 @@
-﻿using CMS.Data;
+using CMS.Data;
 using CMS.Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -54,6 +54,12 @@ namespace CMS.Backend.Controllers
                 return View(model);
             }
 
+            // Hash mật khẩu
+            if (!string.IsNullOrEmpty(model.PasswordHash) && !model.PasswordHash.StartsWith("$2"))
+            {
+                model.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.PasswordHash);
+            }
+
             // Lưu xuống database
             _context.Users.Add(model);
             _context.SaveChanges();
@@ -94,7 +100,14 @@ namespace CMS.Backend.Controllers
             // Nếu có nhập mật khẩu mới
             if (!string.IsNullOrEmpty(NewPassword))
             {
-                model.PasswordHash = NewPassword;
+                if (!NewPassword.StartsWith("$2"))
+                {
+                    model.PasswordHash = BCrypt.Net.BCrypt.HashPassword(NewPassword);
+                }
+                else
+                {
+                    model.PasswordHash = NewPassword;
+                }
             }
             else
             {

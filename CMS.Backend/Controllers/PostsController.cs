@@ -1,106 +1,10 @@
-//using Microsoft.AspNetCore.Mvc;
-//using Microsoft.EntityFrameworkCore;
-//using CMS.Data;
-
-//namespace CMS.Backend.Controllers
-//{
-//    // https://localhost:xxxx/api/posts
-//    [Route("api/[controller]")]
-//    [ApiController]
-//    public class PostsController : ControllerBase
-//    {
-//        private readonly ApplicationDbContext _context;
-
-//        public PostsController(ApplicationDbContext context)
-//        {
-//            _context = context;
-//        }
-
-//        // =========================
-//        // GET ALL POSTS
-//        // api/posts
-//        // =========================
-//        [HttpGet]
-//        public IActionResult GetPosts()
-//        {
-//            var posts = _context.Posts
-//                .Include(p => p.Category)
-//                .OrderByDescending(p => p.CreatedDate)
-//                .Select(p => new
-//                {
-//                    p.Id,
-//                    p.Title,
-//                    p.ImageUrl,
-//                    p.CreatedDate,
-
-//                    CategoryName = p.Category.Name
-//                })
-//                .ToList();
-
-//            return Ok(posts);
-//        }
-
-//        // =========================
-//        // GET POST DETAIL
-//        // api/posts/1
-//        // =========================
-//        [HttpGet("{id}")]
-//        public IActionResult GetDetail(int id)
-//        {
-//            var post = _context.Posts
-//                .Include(p => p.Category)
-//                .Where(p => p.Id == id)
-//                .Select(p => new
-//                {
-//                    p.Id,
-//                    p.Title,
-//                    p.Content,
-//                    p.ImageUrl,
-//                    p.CreatedDate,
-
-//                    CategoryName = p.Category.Name
-//                })
-//                .FirstOrDefault();
-
-//            // Không tìm thấy
-//            if (post == null)
-//            {
-//                return NotFound(new
-//                {
-//                    message = "Không tìm thấy bài viết này trong hệ thống"
-//                });
-//            }
-
-//            return Ok(post);
-//        }
-
-//        // =========================
-//        // GET POSTS BY CATEGORY
-//        // api/posts/category/1
-//        // =========================
-//        [HttpGet("category/{categoryId}")]
-//        public IActionResult GetByCategory(int categoryId)
-//        {
-//            var posts = _context.Posts
-//                .Where(p => p.CategoryId == categoryId)
-//                .OrderByDescending(p => p.Id)
-//                .Select(p => new
-//                {
-//                    p.Id,
-//                    p.Title,
-//                    p.ImageUrl,
-//                    p.CreatedDate
-//                })
-//                .ToList();
-
-//            return Ok(posts);
-//        }
-//    }
-//}
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CMS.Data;
-using CMS.Data.Entities; // Thay thế bằng Namespace chứa Class Post của bạn nếu khác
+using CMS.Data.Entities;
+using System.Linq;
+using System;
+using System.Threading.Tasks;
 
 namespace CMS.Backend.Controllers
 {
@@ -120,33 +24,42 @@ namespace CMS.Backend.Controllers
         // 1. READ ALL - Lấy toàn bộ bài viết (Code của bạn)
         // ==========================================
         [HttpGet]
-        public IActionResult GetPosts([FromQuery] int page = 1, [FromQuery] int pageSize = 6)
+        public async Task<IActionResult> GetPosts(
+            [FromQuery] string? keyword,
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 10)
         {
             var query = _context.Posts.Include(p => p.Category).AsQueryable();
 
-            int totalItems = query.Count();
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                query = query.Where(p => p.Title.Contains(keyword) || 
+                                         (p.Content != null && p.Content.Contains(keyword)));
+            }
+
+            int totalItems = await query.CountAsync();
             int totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
 
-            var posts = query
-                .OrderByDescending(p => p.CreatedDate)
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .Select(p => new
-                {
-                    p.Id,
-                    p.Title,
-                    p.ImageUrl,
-                    p.CreatedDate,
-                    CategoryName = p.Category.Name
-                })
-                .ToList();
+            var items = await query.OrderByDescending(p => p.CreatedDate)
+                                   .Skip((page - 1) * pageSize)
+                                   .Take(pageSize)
+                                   .Select(p => new
+                                   {
+                                       p.Id,
+                                       p.Title,
+                                       p.Content,
+                                       p.ImageUrl,
+                                       p.CreatedDate,
+                                       CategoryName = p.Category.Name
+                                   })
+                                   .ToListAsync();
 
             return Ok(new
             {
-                data = posts,
-                totalItems,
+                items,
                 totalPages,
-                page,
+                totalItems,
+                currentPage = page,
                 pageSize
             });
         }
@@ -201,6 +114,7 @@ namespace CMS.Backend.Controllers
                 {
                     p.Id,
                     p.Title,
+                    p.Content,
                     p.ImageUrl,
                     p.CreatedDate
                 })

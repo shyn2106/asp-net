@@ -5,13 +5,32 @@ function ShopSidebar({ activeCategory, minPrice, maxPrice, onFilterChange }) {
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
 
+    // Thêm State cục bộ cho khoảng giá để làm hiệu ứng mượt (Debounce)
+    const [localMinPrice, setLocalMinPrice] = useState(minPrice || '');
+    const [localMaxPrice, setLocalMaxPrice] = useState(maxPrice || '');
+
+    // Debounce: Chờ 600ms sau khi người dùng dừng gõ/kéo rồi mới gọi API
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            if (localMinPrice !== minPrice || localMaxPrice !== maxPrice) {
+                onFilterChange({ minPrice: localMinPrice, maxPrice: localMaxPrice });
+            }
+        }, 600);
+        return () => clearTimeout(timer);
+    }, [localMinPrice, localMaxPrice, minPrice, maxPrice, onFilterChange]);
+
     useEffect(() => {
         const fetchCategories = async () => {
             try {
                 setLoading(true);
                 const response = await categoryProductService.getAllCategoryProducts();
-                // response có thể là array hoặc object chứa mảng data
-                const data = Array.isArray(response) ? response : response.data || [];
+                let data = response.data || response;
+                // Nếu data là object phân trang có chứa items, thì lấy items
+                if (data && data.items) {
+                    data = data.items;
+                } else if (!Array.isArray(data)) {
+                    data = [];
+                }
                 setCategories(data);
             } catch (error) {
                 console.error("Lỗi nạp danh mục sản phẩm:", error);
@@ -59,9 +78,28 @@ function ShopSidebar({ activeCategory, minPrice, maxPrice, onFilterChange }) {
             </div>
 
             {/* KHỐI LỌC THEO KHOẢNG GIÁ */}
-            <h6 className="fw-bold text-uppercase mb-3" style={{ color: '#a855f7', letterSpacing: '1px' }}>
+            <h6 className="fw-bold text-uppercase mb-3 mt-2" style={{ color: '#a855f7', letterSpacing: '1px' }}>
                 <i className="bi bi-tags-fill me-2"></i>Khoảng Giá (VND)
             </h6>
+            
+            {/* Range Slider cho mức giá tối đa */}
+            <div className="mb-3 px-1">
+                <label className="form-label text-white-50 small mb-1">Mức giá tối đa (Kéo để lọc nhanh):</label>
+                <input 
+                    type="range" 
+                    className="form-range" 
+                    min="0" 
+                    max="100000000" 
+                    step="500000" 
+                    value={localMaxPrice || 100000000} 
+                    onChange={(e) => setLocalMaxPrice(e.target.value)}
+                />
+                <div className="d-flex justify-content-between text-muted small" style={{ fontSize: '11px' }}>
+                    <span>0đ</span>
+                    <span>100Tr+</span>
+                </div>
+            </div>
+
             <div className="price-filter-inputs">
                 <div className="input-group input-group-sm mb-3">
                     <span className="input-group-text bg-dark border-0 text-white-50">Từ</span>
@@ -69,8 +107,8 @@ function ShopSidebar({ activeCategory, minPrice, maxPrice, onFilterChange }) {
                         type="number"
                         className="form-control bg-dark border-0 text-white glow-border"
                         placeholder="0"
-                        value={minPrice}
-                        onChange={(e) => onFilterChange({ minPrice: e.target.value })}
+                        value={localMinPrice}
+                        onChange={(e) => setLocalMinPrice(e.target.value)}
                         style={{ outline: 'none', boxShadow: 'none' }}
                     />
                 </div>
@@ -80,8 +118,8 @@ function ShopSidebar({ activeCategory, minPrice, maxPrice, onFilterChange }) {
                         type="number"
                         className="form-control bg-dark border-0 text-white glow-border"
                         placeholder="99.000.000"
-                        value={maxPrice}
-                        onChange={(e) => onFilterChange({ maxPrice: e.target.value })}
+                        value={localMaxPrice}
+                        onChange={(e) => setLocalMaxPrice(e.target.value)}
                         style={{ outline: 'none', boxShadow: 'none' }}
                     />
                 </div>
@@ -91,7 +129,11 @@ function ShopSidebar({ activeCategory, minPrice, maxPrice, onFilterChange }) {
             <button
                 className="btn btn-sm w-100 mt-4 rounded-pill font-monospace fw-bold"
                 style={{ backgroundColor: "rgba(255, 255, 255, 0.1)", color: "#fff" }}
-                onClick={() => onFilterChange({ categoryProductId: null, minPrice: '', maxPrice: '' })}
+                onClick={() => {
+                    setLocalMinPrice('');
+                    setLocalMaxPrice('');
+                    onFilterChange({ categoryProductId: null, minPrice: '', maxPrice: '' });
+                }}
             >
                 Xóa bộ lọc
             </button>

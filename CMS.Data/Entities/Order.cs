@@ -1,4 +1,4 @@
-﻿//Sinh viên : Phạm Văn Quỳnh Phúc
+//Sinh viên : Phạm Văn Quỳnh Phúc
 //MSSV:2123110202
 //Lớp:CCQ2311F
 //Ngày tạo: 15/05/2026
@@ -25,6 +25,13 @@ namespace CMS.Data.Entities
         public int Status { get; set; } // 0: Chờ duyệt, 1: Đang giao, 2: Đã xong
 
         public string? Notes { get; set; }
+
+        public int PaymentMethod { get; set; } = 0; // 0: COD, 1: Online
+
+        public int RefundStatus { get; set; } = 0; // 0: None, 1: Pending, 2: Refunded
+
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal RefundAmount { get; set; } = 0;
 
         [ForeignKey("CustomerId")]
         public virtual Customer? Customer { get; set; }

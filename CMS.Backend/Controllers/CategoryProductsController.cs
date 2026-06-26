@@ -1,6 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using CMS.Data;
 using CMS.Data.Entities;
+using System.Linq;
+using System;
+using System.Threading.Tasks;
 
 namespace CMS.Backend.Controllers
 {
@@ -20,18 +24,40 @@ namespace CMS.Backend.Controllers
         // api/categoriesproducts
         // =========================
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll(
+            [FromQuery] string? keyword,
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 10)
         {
-            var data = _context.CategoriesProducts
-                .Select(c => new
-                {
-                    c.Id,
-                    c.Name,
-                    c.Description
-                })
-                .ToList();
+            var query = _context.CategoriesProducts.AsQueryable();
 
-            return Ok(data);
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                query = query.Where(c => c.Name.Contains(keyword));
+            }
+
+            int totalItems = await query.CountAsync();
+            int totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
+
+            var items = await query.OrderByDescending(c => c.Id)
+                                   .Skip((page - 1) * pageSize)
+                                   .Take(pageSize)
+                                   .Select(c => new
+                                   {
+                                       c.Id,
+                                       c.Name,
+                                       c.Description
+                                   })
+                                   .ToListAsync();
+
+            return Ok(new
+            {
+                items,
+                totalPages,
+                totalItems,
+                currentPage = page,
+                pageSize
+            });
         }
 
         // =========================

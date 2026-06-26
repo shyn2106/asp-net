@@ -31,7 +31,7 @@ namespace CMS.Backend.Controllers
         {
             try
             {
-                var query = _context.Products.Include(p => p.CategoryProduct).AsQueryable();
+                var query = _context.Products.Include(p => p.CategoryProduct).Where(p => !p.IsDeleted).AsQueryable();
 
                 if (categoryProductId.HasValue)
                 {
@@ -74,15 +74,89 @@ namespace CMS.Backend.Controllers
                 return Ok(new
                 {
                     data = result,
-                    totalItems,
-                    totalPages,
-                    page,
-                    pageSize
+                    page = page,
+                    pageSize = pageSize,
+                    totalItems = totalItems,
+                    totalPages = totalPages
                 });
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
-                return StatusCode(500, $"Lỗi hệ thống SQL Server: {ex.Message}");
+                return StatusCode(500, new { message = "Lỗi khi lấy danh sách sản phẩm", detail = ex.Message });
+            }
+        }
+
+        // =========================
+        // GET LATEST
+        // api/products/latest
+        // =========================
+        [HttpGet("latest")]
+        public async Task<IActionResult> GetLatestProducts()
+        {
+            try
+            {
+                var latestProducts = await _context.Products
+                    .Include(p => p.CategoryProduct)
+                    .Where(p => !p.IsDeleted)
+                    .OrderByDescending(p => p.Id)
+                    .Take(3)
+                    .Select(p => new
+                    {
+                        id = p.Id,
+                        name = p.Name,
+                        price = p.Price,
+                        stockQuantity = p.StockQuantity,
+                        imageUrl = p.ImageUrl,
+                        description = p.Description,
+                        categoryProductId = p.CategoryProductId,
+                        categoryProductName = p.CategoryProduct != null ? p.CategoryProduct.Name : null,
+                        isDeleted = p.IsDeleted
+                    })
+                    .ToListAsync();
+
+                return Ok(latestProducts);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Lỗi khi lấy danh sách sản phẩm mới nhất", detail = ex.Message });
+            }
+        }
+
+        // =========================
+        // GET HOT
+        // api/products/hot
+        // =========================
+        [HttpGet("hot")]
+        public async Task<IActionResult> GetHotProducts()
+        {
+            try
+            {
+                var hotProducts = await _context.Products
+                    .Include(p => p.CategoryProduct)
+                    .Where(p => !p.IsDeleted)
+                    .OrderByDescending(p => _context.OrderDetails
+                        .Where(od => od.ProductId == p.Id)
+                        .Sum(od => (int?)od.Quantity) ?? 0)
+                    .Take(3)
+                    .Select(p => new
+                    {
+                        id = p.Id,
+                        name = p.Name,
+                        price = p.Price,
+                        stockQuantity = p.StockQuantity,
+                        imageUrl = p.ImageUrl,
+                        description = p.Description,
+                        categoryProductId = p.CategoryProductId,
+                        categoryProductName = p.CategoryProduct != null ? p.CategoryProduct.Name : null,
+                        isDeleted = p.IsDeleted
+                    })
+                    .ToListAsync();
+
+                return Ok(hotProducts);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Lỗi khi lấy danh sách sản phẩm hot", detail = ex.Message });
             }
         }
 
@@ -95,7 +169,7 @@ namespace CMS.Backend.Controllers
         {
             var product = await _context.Products
                 .Include(p => p.CategoryProduct)
-                .Where(p => p.Id == id)
+                .Where(p => p.Id == id && !p.IsDeleted)
                 .Select(p => new
                 {
                     p.Id,

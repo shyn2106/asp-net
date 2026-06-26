@@ -1,4 +1,4 @@
-﻿using CMS.Data;
+using CMS.Data;
 using CMS.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -23,6 +23,7 @@ namespace CMS.Backend.Controllers
         {
             var products = _context.Products
                 .Include(p => p.CategoryProduct)
+                .Where(p => !p.IsDeleted)
                 .ToList();
 
             return View(products);
@@ -172,11 +173,40 @@ namespace CMS.Backend.Controllers
 
             if (product != null)
             {
-                _context.Products.Remove(product);
+                product.IsDeleted = true;
                 _context.SaveChanges();
             }
 
             return RedirectToAction("Index");
+        }
+
+        // =========================
+        // TRASH - THÙNG RÁC
+        // =========================
+        public IActionResult Trash()
+        {
+            var deletedProducts = _context.Products
+                .Include(p => p.CategoryProduct)
+                .Where(p => p.IsDeleted)
+                .ToList();
+
+            return View(deletedProducts);
+        }
+
+        // =========================
+        // RESTORE - KHÔI PHỤC
+        // =========================
+        public IActionResult Restore(int id)
+        {
+            var product = _context.Products.Find(id);
+
+            if (product != null)
+            {
+                product.IsDeleted = false;
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("Trash");
         }
     }
 }

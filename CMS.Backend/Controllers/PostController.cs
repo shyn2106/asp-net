@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CMS.Data;
 using CMS.Data.Entities;
@@ -193,6 +193,52 @@ namespace CMS.Backend.Controllers
             _context.SaveChanges();
 
             return RedirectToAction("Index");
+        }
+
+        // =========================
+        // UPLOAD IMAGE FOR CKEDITOR
+        // =========================
+        [HttpPost]
+        public IActionResult UploadImageEditor(IFormFile upload)
+        {
+            if (upload != null && upload.Length > 0)
+            {
+                string folder = Path.Combine(
+                    Directory.GetCurrentDirectory(),
+                    "wwwroot",
+                    "uploads"
+                );
+
+                if (!Directory.Exists(folder))
+                {
+                    Directory.CreateDirectory(folder);
+                }
+
+                string fileName =
+                    Guid.NewGuid().ToString()
+                    + Path.GetExtension(upload.FileName);
+
+                string filePath = Path.Combine(folder, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    upload.CopyTo(stream);
+                }
+
+                // CKEditor 5 requires this JSON response format
+                return Json(new
+                {
+                    uploaded = 1,
+                    fileName = fileName,
+                    url = "/uploads/" + fileName
+                });
+            }
+
+            return Json(new
+            {
+                uploaded = 0,
+                error = new { message = "Không thể tải ảnh lên." }
+            });
         }
     }
 }

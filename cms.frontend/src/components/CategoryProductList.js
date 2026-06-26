@@ -8,7 +8,12 @@ function CategoryProductList({ selectedCategoryId, onSelectCategory }) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const data = await categoryProductService.getAllCategoryProducts();
+                let data = await categoryProductService.getAllCategoryProducts();
+                if (data && data.items) {
+                    data = data.items;
+                } else if (!Array.isArray(data)) {
+                    data = [];
+                }
                 setCategoryProducts(data);
             } catch (error) {
                 console.error("Lỗi tải danh mục:", error);

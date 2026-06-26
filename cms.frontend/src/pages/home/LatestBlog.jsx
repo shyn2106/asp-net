@@ -11,7 +11,8 @@ function LatestBlog() {
             try {
                 const response = await blogService.getAllPosts();
                 const data = response.data || response;
-                setPosts(data);
+                // Fix for pagination response ({ items: [...] }) vs old array response ([...])
+                setPosts(data.items || data);
             } catch (error) {
                 console.error("Lỗi khi tải bài viết:", error);
             } finally {

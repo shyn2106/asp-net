@@ -16,9 +16,16 @@ function LoadingOrEmpty({ isLoading, totalItems, children }) {
     // 2. Kịch bản bộ lọc không tìm thấy kết quả nào
     if (totalItems === 0) {
         return (
-            <div className="text-center py-5 my-4 rounded shadow-sm" style={{ backgroundColor: "#151b2d", border: "1px dashed rgba(255,255,255,0.2)" }}>
-                <i className="bi bi-box-seam display-1 text-secondary mb-3 d-block"></i>
-                <h5 className="fw-bold text-white-50">RẤT TIẾC, KHÔNG CÓ SẢN PHẨM PHÙ HỢP</h5>
+            <div className="text-center py-5 my-4 rounded shadow-sm fade-in" style={{ backgroundColor: "#151b2d", border: "1px dashed rgba(6, 182, 212, 0.3)" }}>
+                <img 
+                    src="https://cdn-icons-png.flaticon.com/512/6134/6134065.png" 
+                    alt="Empty Search" 
+                    className="mb-4"
+                    style={{ width: "120px", filter: "drop-shadow(0 0 10px rgba(6, 182, 212, 0.5))" }}
+                />
+                <h5 className="fw-bold text-white mb-2" style={{ fontFamily: 'Rajdhani, sans-serif', fontSize: '1.2rem', letterSpacing: '0.5px' }}>
+                    Không tìm thấy sản phẩm nào phù hợp với tiêu chí của bạn
+                </h5>
                 <p className="text-muted small">Vui lòng nới rộng khoảng giá hoặc kiểm tra lại từ khóa tìm kiếm của bạn.</p>
             </div>
         );

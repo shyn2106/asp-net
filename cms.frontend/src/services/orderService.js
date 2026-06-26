@@ -8,6 +8,10 @@ const orderService = {
     getOrderById: (id) => {
         return axiosClient.get(`/orders/${id}`);
     },
+
+    getOrdersByCustomer: (customerId) => {
+        return axiosClient.get(`/orders/customer/${customerId}`);
+    },
     
     createOrder: (orderData) => {
         // orderData contains CustomerId, Status (0: Chờ duyệt), Notes

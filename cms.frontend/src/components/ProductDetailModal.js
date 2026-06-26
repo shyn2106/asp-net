@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useState, useContext } from "react";
+import { AppContext } from "../context/AppContext";
 
 function ProductDetailModal({ product, onClose, onAddToCart }) {
+    const { cart } = useContext(AppContext);
+    const [quantity, setQuantity] = useState(1);
+
     if (!product) return null;
 
     // Helper to generate tech specs based on product name
@@ -77,13 +81,37 @@ function ProductDetailModal({ product, onClose, onAddToCart }) {
                                     <h4 className="fw-bold text-info mb-1">
                                         {new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(product.price)}
                                     </h4>
-                                    <p className="text-muted small mb-0">
+                                    <p className="text-muted small mb-3">
                                         Trạng thái kho: {product.stockQuantity > 0 ? (
                                             <span className="text-success fw-bold"><i className="bi bi-check-circle-fill me-1"></i>Còn hàng ({product.stockQuantity})</span>
                                         ) : (
                                             <span className="text-danger fw-bold"><i className="bi bi-x-circle-fill me-1"></i>Hết hàng</span>
                                         )}
                                     </p>
+
+                                    {/* CHỌN SỐ LƯỢNG */}
+                                    {product.stockQuantity > 0 && (
+                                        <div className="d-flex align-items-center justify-content-start bg-dark bg-opacity-25 p-2 rounded-3 border border-secondary border-opacity-25" style={{ width: "fit-content" }}>
+                                            <span className="me-3 small text-white-50 fw-semibold">Số lượng:</span>
+                                            <div className="btn-group btn-group-sm" role="group">
+                                                <button 
+                                                    type="button" 
+                                                    className="btn btn-outline-info" 
+                                                    onClick={() => setQuantity(q => Math.max(1, q - 1))}
+                                                >
+                                                    <i className="bi bi-dash"></i>
+                                                </button>
+                                                <span className="btn border-info text-white" style={{ minWidth: "40px", cursor: "default" }}>{quantity}</span>
+                                                <button 
+                                                    type="button" 
+                                                    className="btn btn-outline-info" 
+                                                    onClick={() => setQuantity(q => q + 1)}
+                                                >
+                                                    <i className="bi bi-plus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 
@@ -143,7 +171,15 @@ function ProductDetailModal({ product, onClose, onAddToCart }) {
                             }}
                             disabled={product.stockQuantity <= 0}
                             onClick={() => {
-                                onAddToCart(product);
+                                const cartItem = cart.find(item => item.id === product.id);
+                                const currentQtyInCart = cartItem ? cartItem.quantity : 0;
+                                
+                                if (currentQtyInCart + quantity > product.stockQuantity) {
+                                    alert("Số lượng sản phẩm trong kho không đủ!");
+                                    return;
+                                }
+
+                                onAddToCart(product, quantity);
                                 onClose();
                             }}
                         >

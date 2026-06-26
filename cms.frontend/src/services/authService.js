@@ -56,6 +56,32 @@ const authService = {
             console.error("Lỗi cập nhật thông tin khách hàng:", error);
             throw error;
         }
+    },
+
+    /**
+     * 5. Hàm gửi yêu cầu khôi phục mật khẩu
+     */
+    forgotPassword: async (email) => {
+        try {
+            const response = await axiosClient.post("/CustomerAuth/ForgotPassword", { email });
+            return response.data || response;
+        } catch (error) {
+            console.error("Lỗi API forgotPassword:", error);
+            throw error;
+        }
+    },
+
+    /**
+     * 6. Hàm gửi yêu cầu đổi mật khẩu
+     */
+    changePassword: async (data) => {
+        try {
+            const response = await axiosClient.post("/CustomerAuth/ChangePassword", data);
+            return response.data || response;
+        } catch (error) {
+            console.error("Lỗi API changePassword:", error);
+            throw error;
+        }
     }
 };
 

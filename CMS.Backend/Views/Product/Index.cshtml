@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CMS.Data.Entities.Product>
+@model IEnumerable<CMS.Data.Entities.Product>
 
 @{
     Layout = "_LayoutAdmin";
@@ -27,16 +27,16 @@
 
         </div>
 
-        <!-- ADD BUTTON -->
-        <a asp-action="Create"
-           class="btn btn-success rounded-pill px-4 shadow-sm">
+        <!-- ACTIONS -->
+        <div class="d-flex gap-2">
+            <a asp-action="Trash" class="btn btn-outline-danger rounded-pill px-4 shadow-sm fw-bold">
+                <i class="fas fa-trash-restore me-2"></i> Thùng rác
+            </a>
 
-            <i class="bi bi-plus-circle me-2"></i>
-
-            Thêm sản phẩm
-
-        </a>
-
+            <a asp-action="Create" class="btn btn-success rounded-pill px-4 shadow-sm fw-bold">
+                <i class="bi bi-plus-circle me-2"></i> Thêm sản phẩm
+            </a>
+        </div>
     </div>
 
     <!-- PRODUCTS -->

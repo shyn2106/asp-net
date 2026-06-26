@@ -12,6 +12,26 @@ const productService = {
         }
     },
 
+    getLatestProducts: async () => {
+        try {
+            const response = await axiosClient.get('/Products/latest');
+            return response.data || response;
+        } catch (error) {
+            console.error("Lỗi API getLatestProducts:", error);
+            throw error;
+        }
+    },
+
+    getHotProducts: async () => {
+        try {
+            const response = await axiosClient.get('/Products/hot');
+            return response.data || response;
+        } catch (error) {
+            console.error("Lỗi API getHotProducts:", error);
+            throw error;
+        }
+    },
+
     getProductById: async (id) => {
         try {
             const response = await axiosClient.get(`/Products/${id}`);

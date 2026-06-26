@@ -2,146 +2,357 @@
 
 @{
     Layout = "_LayoutAdmin";
-    ViewData["Title"] = "Chi tiết đơn hàng #" + Model.Id;
+    ViewData["Title"] = "Chi tiết Hóa đơn #" + Model.Id;
 }
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    body {
+        background-color: #f4f6f8;
+    }
+    .invoice-card {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        border: none;
+    }
+    .invoice-header-bg {
+        background: #f8f9fa;
+        border-bottom: 1px solid #e9ecef;
+        padding: 20px;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+    }
+    .action-card {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        border: none;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+    .status-box {
+        background: #f8fcf9;
+        border: 1px solid #e2f3e8;
+        padding: 15px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+    .table-products th {
+        background: #f8f9fa;
+        color: #6c757d;
+        text-transform: uppercase;
+        font-size: 12px;
+        border-top: none;
+        border-bottom: 1px solid #e9ecef;
+        padding: 15px;
+    }
+    .table-products td {
+        vertical-align: middle;
+        padding: 15px;
+        border-bottom: 1px solid #f1f3f5;
+    }
+    .text-danger-custom {
+        color: #d32f2f;
+    }
+</style>
 
-<div class="container mt-5 mb-5">
+<div class="container-fluid mt-4 mb-5" style="max-width: 1400px;">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+            <i class="fas fa-check-circle me-2"></i> @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    
+    <!-- Page Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold text-dark mb-0">
-            <i class="fas fa-file-invoice-dollar text-primary me-2"></i> Chi tiết đơn hàng #@Model.Id
-        </h2>
-        <a asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4 fw-bold shadow-sm">
-            <i class="fas fa-arrow-left me-2"></i> Quay lại
-        </a>
+        <div>
+            <h3 class="fw-bold text-dark mb-1">Chi tiết Hóa đơn</h3>
+            <span class="text-muted small">Hóa đơn điện tử nội bộ</span>
+        </div>
+        <div class="d-flex gap-2">
+            <a asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4 bg-white fw-bold shadow-sm">
+                <i class="fas fa-arrow-left me-1"></i> Trở về
+            </a>
+            <button class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm" onclick="window.print()">
+                <i class="fas fa-print me-1"></i> In / Xuất PDF
+            </button>
+        </div>
     </div>
 
     <div class="row g-4">
-        <!-- Thông tin khách hàng & Đơn hàng -->
-        <div class="col-lg-4">
-            <div class="card border-0 shadow-lg rounded-4 h-100">
-                <div class="card-header bg-primary text-white p-3 rounded-top-4">
-                    <h5 class="mb-0 fw-bold"><i class="fas fa-info-circle me-2"></i> Thông tin chung</h5>
+        <!-- Cột trái: Hóa đơn -->
+        <div class="col-lg-8">
+            <div class="invoice-card">
+                <!-- Header hóa đơn -->
+                <div class="invoice-header-bg d-flex justify-content-between align-items-center flex-wrap gap-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="bg-dark text-white rounded p-3 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                            <i class="fas fa-file-invoice fs-4"></i>
+                        </div>
+                        <div>
+                            <h4 class="fw-bold mb-0 text-uppercase">G-ZONE Web</h4>
+                            <small class="text-muted">Hóa đơn bán lẻ / Hóa đơn điện tử</small>
+                        </div>
+                    </div>
+                    <div class="text-md-end text-start">
+                        <h5 class="fw-bold text-dark mb-1 text-uppercase">HÓA ĐƠN #@Model.Id</h5>
+                        <small class="text-muted">Ngày: @Model.OrderDate.ToString("dd/MM/yyyy HH:mm")</small>
+                    </div>
                 </div>
-                <div class="card-body p-4 bg-white rounded-bottom-4">
-                    <div class="mb-3 border-bottom pb-2">
-                        <small class="text-muted text-uppercase fw-bold">Trạng thái đơn hàng</small>
-                        <div class="mt-2 mb-1">
-                            <form asp-action="UpdateStatus" method="post" class="d-flex align-items-center gap-2">
-                                <input type="hidden" name="id" value="@Model.Id" />
-                                <select name="status" class="form-select form-select-sm" style="max-width: 150px; font-weight: bold; @(Model.Status == 2 ? "color: #198754;" : (Model.Status == 1 ? "color: #0dcaf0;" : "color: #ffc107;"))">
-                                    @if(Model.Status == 0) { <option value="0" selected>Chờ duyệt</option> } else { <option value="0">Chờ duyệt</option> }
-                                    @if(Model.Status == 1) { <option value="1" selected>Đang giao</option> } else { <option value="1">Đang giao</option> }
-                                    @if(Model.Status == 2) { <option value="2" selected>Đã hoàn thành</option> } else { <option value="2">Đã hoàn thành</option> }
-                                </select>
-                                <button type="submit" class="btn btn-sm btn-primary rounded-pill px-3 shadow-sm"><i class="fas fa-save me-1"></i> Lưu</button>
-                            </form>
+
+                <div class="p-4">
+                    <!-- Thông tin -->
+                    <div class="row mb-5">
+                        <div class="col-md-6">
+                            <small class="text-muted text-uppercase fw-bold d-block mb-3">Thông Tin Khách Hàng:</small>
+                            <h6 class="fw-bold mb-2">@(Model.Customer?.FullName ?? "Khách vãng lai")</h6>
+                            <div class="text-muted small mb-1"><i class="fas fa-phone fa-fw me-1"></i> @(Model.Customer?.Phone ?? "Không có SĐT")</div>
+                            <div class="text-muted small mb-1"><i class="fas fa-envelope fa-fw me-1"></i> @(Model.Customer?.Email ?? "Không có email")</div>
+                            <div class="text-muted small mb-1"><i class="fas fa-map-marker-alt fa-fw me-1"></i> @(Model.Customer?.Address ?? "Không có địa chỉ")</div>
+                            
+                            @if (!string.IsNullOrEmpty(Model.Notes))
+                            {
+                                <div class="text-muted small mt-2"><i class="fas fa-comment-dots fa-fw me-1"></i> <i>Ghi chú: @Model.Notes</i></div>
+                            }
+                        </div>
+                        <div class="col-md-6 text-md-end mt-4 mt-md-0">
+                            <small class="text-muted text-uppercase fw-bold d-block mb-3">Phương Thức Thanh Toán:</small>
+                            @if (Model.PaymentMethod == 1)
+                            {
+                                <span class="badge bg-success text-white px-3 py-2 rounded-pill fs-6 shadow-sm">
+                                    <i class="fas fa-credit-card me-1"></i> Thanh toán Online
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge text-white px-3 py-2 rounded-pill fs-6 shadow-sm" style="background-color: #891550;">
+                                    <i class="fas fa-money-bill-wave me-1"></i> COD (Thanh toán tiền mặt)
+                                </span>
+                            }
+                            
+                            @if (Model.RefundStatus == 1)
+                            {
+                                <div class="mt-3 text-warning fw-bold bg-warning bg-opacity-10 p-2 rounded border border-warning"><i class="fas fa-undo-alt me-1"></i> Đang hoàn tiền: @Model.RefundAmount.ToString("N0") đ</div>
+                            }
+                            else if (Model.RefundStatus == 2)
+                            {
+                                <div class="mt-3 text-success fw-bold bg-success bg-opacity-10 p-2 rounded border border-success"><i class="fas fa-check-circle me-1"></i> Đã hoàn tiền: @Model.RefundAmount.ToString("N0") đ</div>
+                            }
                         </div>
                     </div>
 
-                    <div class="mb-3 border-bottom pb-2">
-                        <small class="text-muted text-uppercase fw-bold">Ngày đặt</small>
-                        <p class="mb-0 fw-bold text-dark mt-1">@Model.OrderDate.ToString("dd/MM/yyyy HH:mm")</p>
-                    </div>
+                    <!-- Bảng Sản phẩm -->
+                    <form asp-action="UpdateDefectiveItems" method="post" id="defectiveForm">
+                        <input type="hidden" name="orderId" value="@Model.Id" />
+                        <div class="table-responsive">
+                            <table class="table table-products w-100">
+                                <thead>
+                                    <tr>
+                                        <th>SẢN PHẨM</th>
+                                        <th class="text-end">ĐƠN GIÁ</th>
+                                        <th class="text-center">SL</th>
+                                        <th class="text-end">THÀNH TIỀN</th>
+                                        <th class="text-center">THAO TÁC</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.OrderDetails != null && Model.OrderDetails.Any())
+                                    {
+                                        decimal totalOrder = 0;
+                                        foreach (var detail in Model.OrderDetails)
+                                        {
+                                            decimal lineTotal = detail.Quantity * detail.UnitPrice;
+                                            totalOrder += lineTotal;
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="@(detail.Product?.ImageUrl ?? "/images/placeholder.jpg")" alt="Product" class="rounded me-3 border" style="width: 40px; height: 40px; object-fit: cover;">
+                                                        <div>
+                                                            <div class="fw-bold text-dark">@(detail.Product?.Name ?? "Sản phẩm đã xóa")</div>
+                                                            <small class="text-muted">ID: @detail.ProductId</small>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="text-end text-muted">@detail.UnitPrice.ToString("N0") đ</td>
+                                                <td class="text-center text-muted">@detail.Quantity</td>
+                                                <td class="text-end fw-bold text-dark">@lineTotal.ToString("N0") đ</td>
+                                                <td class="text-center">
+                                                    @if (Model.Status != 3 && Model.Status != 2) // Không cho phép xóa nếu đã hoàn thành hoặc đã hủy
+                                                    {
+                                                        <div class="form-check d-flex justify-content-center m-0">
+                                                            <input class="form-check-input border-danger me-1" type="checkbox" name="defectiveItemIds" value="@detail.Id" id="defective_@detail.Id">
+                                                            <label class="form-check-label text-danger small fw-bold" for="defective_@detail.Id" style="cursor:pointer">
+                                                                Lỗi / Hư hỏng
+                                                            </label>
+                                                        </div>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                        <tr>
+                                            <td colspan="3" class="text-end fw-bold py-4">TỔNG CỘNG</td>
+                                            <td class="text-end fw-bold text-danger-custom fs-5 py-4" colspan="2">@totalOrder.ToString("N0") đ</td>
+                                        </tr>
+                                        @if (Model.Status != 3 && Model.Status != 2)
+                                        {
+                                            <tr>
+                                                <td colspan="5" class="text-end py-3 bg-light rounded-bottom">
+                                                    <button type="submit" class="btn btn-warning fw-bold px-4 rounded-pill shadow-sm" onclick="return confirm('Xác nhận lưu thay đổi? Các sản phẩm Bị Hư sẽ bị loại khỏi đơn hàng, tự động hoàn kho và tạo phiếu hoàn tiền/giảm giá hóa đơn cho khách.');">
+                                                        <i class="fas fa-save me-2"></i> Lưu thay đổi
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="5" class="text-center py-4 text-muted">Đơn hàng không có sản phẩm.</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
 
-                    <div class="mb-3 border-bottom pb-2">
-                        <small class="text-muted text-uppercase fw-bold">Khách hàng</small>
-                        <p class="mb-0 fw-bold text-dark mt-1">
-                            <i class="fas fa-user-circle text-primary me-1"></i> @(Model.Customer?.FullName ?? "Khách vãng lai")
-                        </p>
-                        <p class="mb-0 text-muted small mt-1">
-                            <i class="fas fa-phone-alt me-1"></i> @(Model.Customer?.Phone ?? "Không có SĐT")
-                        </p>
-                    </div>
-
-                    <div>
-                        <small class="text-muted text-uppercase fw-bold">Ghi chú của khách</small>
-                        <p class="mb-0 fst-italic mt-1 @(string.IsNullOrEmpty(Model.Notes) ? "text-muted" : "text-dark")">
-                            @(string.IsNullOrEmpty(Model.Notes) ? "Không có ghi chú" : Model.Notes)
-                        </p>
+                    <div class="text-center mt-5 mb-2">
+                        <p class="fst-italic text-muted small">Cảm ơn quý khách đã mua sắm tại cửa hàng!</p>
                     </div>
                 </div>
+            </div>
+            <div class="text-muted small mt-3 text-center">
+                &copy; @DateTime.Now.Year, Hệ thống quản trị nội dung <i class="fas fa-heart text-danger mx-1"></i> CMS
             </div>
         </div>
 
-        <!-- Danh sách sản phẩm -->
-        <div class="col-lg-8">
-            <div class="card border-0 shadow-lg rounded-4 h-100">
-                <div class="card-header bg-dark text-white p-3 rounded-top-4">
-                    <h5 class="mb-0 fw-bold"><i class="fas fa-box-open me-2"></i> Danh sách sản phẩm</h5>
-                </div>
-                <div class="card-body p-0 bg-white rounded-bottom-4 overflow-hidden">
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle mb-0">
-                            <thead class="bg-light text-muted text-uppercase small">
-                                <tr>
-                                    <th class="ps-4">Sản phẩm</th>
-                                    <th class="text-center">Số lượng</th>
-                                    <th class="text-end">Đơn giá</th>
-                                    <th class="text-end">Thành tiền</th>
-                                    <th class="text-center pe-4">Thao tác</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if (Model.OrderDetails != null && Model.OrderDetails.Any())
-                                {
-                                    decimal totalOrder = 0;
-                                    foreach (var detail in Model.OrderDetails)
-                                    {
-                                        decimal lineTotal = detail.Quantity * detail.UnitPrice;
-                                        totalOrder += lineTotal;
-                                        <tr>
-                                            <td class="ps-4 py-3">
-                                                <div class="d-flex align-items-center">
-                                                    <img src="@(detail.Product?.ImageUrl ?? "/images/placeholder.jpg")" alt="Product" class="rounded-3 shadow-sm me-3" style="width: 50px; height: 50px; object-fit: cover;">
-                                                    <span class="fw-bold text-dark">@(detail.Product?.Name ?? "Sản phẩm đã xóa")</span>
-                                                </div>
-                                            </td>
-                                            <td class="text-center py-3">
-                                                <span class="badge bg-secondary rounded-pill px-3">@detail.Quantity</span>
-                                            </td>
-                                            <td class="text-end text-muted fw-bold py-3">
-                                                @detail.UnitPrice.ToString("N0") đ
-                                            </td>
-                                            <td class="text-end text-danger fw-bold py-3">
-                                                @lineTotal.ToString("N0") đ
-                                            </td>
-                                            <td class="text-center pe-4 py-3">
-                                                <a href="http://localhost:5173/product/@detail.ProductId" target="_blank" class="btn btn-sm btn-outline-info rounded-pill px-3 shadow-sm">
-                                                    <i class="fas fa-external-link-alt me-1"></i> Xem chi tiết
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    }
-                                    <tr class="bg-light">
-                                        <td colspan="3" class="text-end fw-bold py-4 text-uppercase">Tổng thanh toán:</td>
-                                        <td colspan="2" class="text-end text-danger fw-black fs-5 pe-4 py-4">@totalOrder.ToString("N0") đ</td>
-                                    </tr>
-                                }
-                                else
-                                {
-                                    <tr>
-                                        <td colspan="4" class="text-center py-5 text-muted">
-                                            <i class="fas fa-ghost fs-1 d-block mb-3 text-secondary"></i>
-                                            Đơn hàng này không có sản phẩm nào
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
+        <!-- Cột phải: Sidebar Tác vụ -->
+        <div class="col-lg-4">
+            
+            <!-- Tiến trình đơn hàng -->
+            <div class="action-card">
+                <h6 class="fw-bold text-dark mb-3"><i class="fas fa-clock text-muted me-2"></i> TIẾN TRÌNH ĐƠN HÀNG</h6>
+                <div class="status-box">
+                    @{
+                        string statusText = "";
+                        string icon = "";
+                        string color = "";
+                        
+                        if (Model.Status == 0)
+                        {
+                            statusText = "Chờ duyệt";
+                            icon = "fa-hourglass-half";
+                            color = "text-warning";
+                        }
+                        else if (Model.Status == 1)
+                        {
+                            statusText = "Đang giao hàng";
+                            icon = "fa-truck";
+                            color = "text-info";
+                        }
+                        else if (Model.Status == 2)
+                        {
+                            statusText = "Đã hoàn thành";
+                            icon = "fa-check-circle";
+                            color = "text-success";
+                        }
+                        else if (Model.Status == 3)
+                        {
+                            statusText = "Đã hủy";
+                            icon = "fa-times-circle";
+                            color = "text-danger";
+                        }
+                    }
+                    <i class="fas @icon fs-2 @color"></i>
+                    <div>
+                        <small class="text-muted d-block mb-1">Trạng thái hiện tại</small>
+                        <h6 class="fw-bold @color mb-0">@statusText</h6>
                     </div>
                 </div>
             </div>
+
+            <!-- Tác vụ quản trị viên -->
+            <div class="action-card">
+                <h6 class="fw-bold text-dark mb-3"><i class="fas fa-cogs text-muted me-2"></i> TÁC VỤ QUẢN TRỊ VIÊN</h6>
+                
+                <form asp-action="UpdateStatus" method="post" class="d-flex flex-column gap-2">
+                    <input type="hidden" name="id" value="@Model.Id" />
+                    
+                    @if (Model.Status == 0)
+                    {
+                        <input type="hidden" name="status" value="1" />
+                        <button type="submit" class="btn text-white fw-bold py-2 shadow-sm rounded-pill border-0" style="background: linear-gradient(90deg, #f6c23e, #f0ad4e);">
+                            <i class="fas fa-truck me-1"></i> Duyệt đơn & Giao hàng
+                        </button>
+                        <button type="submit" class="btn text-danger fw-bold py-2 rounded-pill mt-1 border-danger bg-white" onclick="this.form.status.value=3">
+                            <i class="fas fa-times-circle me-1"></i> Chuyển sang Đã Hủy
+                        </button>
+                    }
+                    else if (Model.Status == 1)
+                    {
+                        <input type="hidden" name="status" value="2" />
+                        <button type="submit" class="btn text-white fw-bold py-2 shadow-sm rounded-pill border-0" style="background: linear-gradient(90deg, #1cc88a, #13855c);">
+                            <i class="fas fa-check-double me-1"></i> Đánh dấu Đã Giao Hàng
+                        </button>
+                        <button type="submit" class="btn text-danger fw-bold py-2 rounded-pill mt-1 border-danger bg-white" onclick="this.form.status.value=3">
+                            <i class="fas fa-times-circle me-1"></i> Hủy đơn hàng này
+                        </button>
+                    }
+                    else if (Model.Status == 2)
+                    {
+                        <div class="alert alert-success py-2 mb-0 text-center rounded-pill">
+                            <i class="fas fa-check-circle me-1"></i> Đơn hàng đã xử lý xong
+                        </div>
+                    }
+                    else if (Model.Status == 3)
+                    {
+                        <div class="alert alert-danger py-2 mb-0 text-center rounded-pill">
+                            <i class="fas fa-times-circle me-1"></i> Đơn hàng đã bị hủy
+                        </div>
+                    }
+                </form>
+            </div>
+
+            <!-- Vùng cảnh báo -->
+            <div class="action-card border border-danger bg-white" style="background: #fffafa !important;">
+                <div class="text-center mb-3">
+                    <div class="d-inline-flex align-items-center justify-content-center bg-transparent text-danger rounded-circle mb-2" style="width: 50px; height: 50px; border: 1px solid #dc3545;">
+                        <i class="fas fa-exclamation fs-4"></i>
+                    </div>
+                    <h6 class="fw-bold text-danger">Vùng Cảnh Báo</h6>
+                    <small class="text-muted d-block mt-2">Hành động này sẽ xóa vĩnh viễn đơn hàng khỏi hệ thống, không thể khôi phục.</small>
+                </div>
+                <form asp-action="Delete" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xóa vĩnh viễn hóa đơn này?');">
+                    <input type="hidden" name="id" value="@Model.Id" />
+                    <button type="submit" class="btn btn-outline-danger fw-bold py-2 w-100 rounded-pill bg-white">
+                        <i class="fas fa-trash-alt me-1"></i> Xóa Đơn Hàng
+                    </button>
+                </form>
+            </div>
+
         </div>
     </div>
 </div>
 
 <style>
-    body {
-        background-color: #f8f9fa;
-    }
-    .fw-black {
-        font-weight: 900;
+    @@media print {
+        body {
+            background-color: #fff !important;
+        }
+        .action-card, .btn, .d-flex.gap-2, .text-muted.small.mt-3 {
+            display: none !important;
+        }
+        .col-lg-8 {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+        .invoice-card {
+            box-shadow: none !important;
+            border: 1px solid #ddd !important;
+        }
     }
 </style>

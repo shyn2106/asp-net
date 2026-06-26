@@ -7,6 +7,10 @@ const customerAuthService = {
     
     register: (customerData) => {
         return axiosClient.post("/CustomerAuth/Register", customerData);
+    },
+
+    forgotPassword: (email) => {
+        return axiosClient.post("/CustomerAuth/ForgotPassword", { email });
     }
 };
 

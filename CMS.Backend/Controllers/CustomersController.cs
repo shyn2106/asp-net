@@ -24,11 +24,36 @@ namespace CMS.Backend.Controllers
         // api/customers
         // =========================
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll(
+            [FromQuery] string? keyword,
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 10)
         {
-            var customers = _context.Customers.ToList();
+            var query = _context.Customers.AsQueryable();
 
-            return Ok(customers);
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                query = query.Where(c => c.FullName.Contains(keyword) || 
+                                         c.Email.Contains(keyword) || 
+                                         c.Phone.Contains(keyword));
+            }
+
+            int totalItems = await query.CountAsync();
+            int totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
+
+            var items = await query.OrderByDescending(c => c.Id)
+                                   .Skip((page - 1) * pageSize)
+                                   .Take(pageSize)
+                                   .ToListAsync();
+
+            return Ok(new
+            {
+                items,
+                totalPages,
+                totalItems,
+                currentPage = page,
+                pageSize
+            });
         }
 
         // =========================
@@ -87,7 +112,14 @@ namespace CMS.Backend.Controllers
             customer.Email = model.Email;
             customer.Phone = model.Phone;
             customer.Address = model.Address;
-            customer.Password = model.Password;
+            if (!string.IsNullOrEmpty(model.Password) && !model.Password.StartsWith("$2"))
+            {
+                customer.Password = BCrypt.Net.BCrypt.HashPassword(model.Password);
+            }
+            else if (!string.IsNullOrEmpty(model.Password))
+            {
+                customer.Password = model.Password;
+            }
 
             _context.SaveChanges();
 
@@ -154,7 +186,7 @@ namespace CMS.Backend.Controllers
                     Email = model.Email.Trim(),
                     Phone = model.Phone,
                     Address = model.Address,
-                    Password = model.Password // Lưu mật khẩu thô theo đúng yêu cầu tối giản
+                    Password = BCrypt.Net.BCrypt.HashPassword(model.Password) // Đã mã hoá
                 };
 
                 // Lưu thực thể xuống SQL Server
@@ -184,43 +216,78 @@ namespace CMS.Backend.Controllers
             try
             {
                 // 1. KIỂM TRA TÀI KHOẢN TRONG BẢNG QUẢN TRỊ VIÊN (USERS) TRƯỚC
-                var adminUser = _context.Users
-                    .FirstOrDefault(u => u.Username.Trim().ToLower() == model.Email.Trim().ToLower() && u.PasswordHash == model.Password);
+                var adminUsers = _context.Users
+                    .Where(u => u.Username.Trim().ToLower() == model.Email.Trim().ToLower())
+                    .ToList();
 
-                if (adminUser != null)
+                foreach (var adminUser in adminUsers)
                 {
-                    // Trả về phiên làm việc của Admin
-                    return Ok(new
+                    bool isAdminValid = false;
+                    if (!string.IsNullOrEmpty(adminUser.PasswordHash) && adminUser.PasswordHash.StartsWith("$2"))
                     {
-                        id = adminUser.Id,
-                        fullName = adminUser.FullName,
-                        email = adminUser.Username,
-                        role = "admin" // Cấp quyền Admin
-                    });
+                        isAdminValid = BCrypt.Net.BCrypt.Verify(model.Password, adminUser.PasswordHash);
+                    }
+                    else
+                    {
+                        isAdminValid = (adminUser.PasswordHash == model.Password);
+                        if (isAdminValid)
+                        {
+                            adminUser.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password);
+                            _context.SaveChanges();
+                        }
+                    }
+
+                    if (isAdminValid)
+                    {
+                        return Ok(new
+                        {
+                            id = adminUser.Id,
+                            fullName = adminUser.FullName,
+                            email = adminUser.Username,
+                            role = "admin" // Cấp quyền Admin
+                        });
+                    }
                 }
 
                 // 2. NẾU KHÔNG PHẢI ADMIN, KIỂM TRA TRONG BẢNG KHÁCH HÀNG (CUSTOMERS)
-                var customer = _context.Customers
-                    .FirstOrDefault(c => c.Email.Trim().ToLower() == model.Email.Trim().ToLower() && c.Password == model.Password);
+                var customers = _context.Customers
+                    .Where(c => c.Email.Trim().ToLower() == model.Email.Trim().ToLower())
+                    .ToList();
 
-                // Nếu không tìm thấy bản ghi nào khớp -> Từ chối xác thực
-                if (customer == null)
+                foreach (var customer in customers)
                 {
-                    return Unauthorized(new { message = "Tài khoản hoặc mật khẩu không chính xác!" });
+                    bool isCustomerValid = false;
+                    if (!string.IsNullOrEmpty(customer.Password) && customer.Password.StartsWith("$2"))
+                    {
+                        isCustomerValid = BCrypt.Net.BCrypt.Verify(model.Password, customer.Password);
+                    }
+                    else
+                    {
+                        isCustomerValid = (customer.Password == model.Password);
+                        if (isCustomerValid)
+                        {
+                            customer.Password = BCrypt.Net.BCrypt.HashPassword(model.Password);
+                            _context.SaveChanges();
+                        }
+                    }
+
+                    if (isCustomerValid)
+                    {
+                        var customerSessionData = new
+                        {
+                            id = customer.Id,
+                            fullName = customer.FullName,
+                            email = customer.Email,
+                            phone = customer.Phone,
+                            address = customer.Address,
+                            role = "customer"
+                        };
+                        return Ok(customerSessionData);
+                    }
                 }
 
-                // Xác thực thành công -> Đóng gói dữ liệu sạch trả về cho FrontEnd lưu LocalStorage
-                var customerSessionData = new
-                {
-                    id = customer.Id,
-                    fullName = customer.FullName,
-                    email = customer.Email,
-                    phone = customer.Phone,
-                    address = customer.Address,
-                    role = "customer" // Cấp quyền Khách hàng bình thường
-                };
-
-                return Ok(customerSessionData);
+                // Nếu không tìm thấy bản ghi nào khớp -> Từ chối xác thực
+                return Unauthorized(new { message = "Tài khoản hoặc mật khẩu không chính xác!" });
             }
             catch (Exception ex)
             {

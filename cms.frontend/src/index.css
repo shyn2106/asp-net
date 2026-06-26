@@ -488,3 +488,31 @@ code {
   to { opacity: 1; transform: translateY(0); }
 }
 
+
+.cart-bounce { transform: scale(1.4); }
+
+
+/* CKEditor HTML Output Formatting */
+.article-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 20px auto; /* Hinh anh nam giua bai */
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+.article-content p {
+  margin-bottom: 1.5rem;
+}
+.article-content strong, .article-content b {
+  font-weight: 700;
+  color: #00D4FF; /* Highlight chu dam */
+}
+.article-content em, .article-content i {
+  font-style: italic;
+  color: #a855f7; /* Highlight chu nghieng */
+}
+.article-content {
+  text-align: justify; /* Can le deu */
+}
+

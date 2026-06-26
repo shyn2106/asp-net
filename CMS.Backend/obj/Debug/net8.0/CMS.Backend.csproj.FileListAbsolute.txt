@@ -543,7 +543,6 @@ P:\asp\asp-net-main\asp-net-main\CMS.Backend\obj\Debug\net8.0\staticwebassets.bu
 P:\asp\asp-net-main\asp-net-main\CMS.Backend\obj\Debug\net8.0\staticwebassets.build.json.cache
 P:\asp\asp-net-main\asp-net-main\CMS.Backend\obj\Debug\net8.0\staticwebassets.development.json
 P:\asp\asp-net-main\asp-net-main\CMS.Backend\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-P:\asp\asp-net-main\asp-net-main\CMS.Backend\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 P:\asp\asp-net-main\asp-net-main\CMS.Backend\obj\Debug\net8.0\CMS.Back.83063402.Up2Date
 P:\asp\asp-net-main\asp-net-main\CMS.Backend\obj\Debug\net8.0\CMS.Backend.dll
 P:\asp\asp-net-main\asp-net-main\CMS.Backend\obj\Debug\net8.0\refint\CMS.Backend.dll
@@ -556,3 +555,10 @@ P:\asp\asp-net-main\asp-net-main\CMS.Backend\bin\Debug\net8.0\Swashbuckle.AspNet
 P:\asp\asp-net-main\asp-net-main\CMS.Backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 P:\asp\asp-net-main\asp-net-main\CMS.Backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
 P:\asp\asp-net-main\asp-net-main\CMS.Backend\obj\Debug\net8.0\CMS.Backend.MvcApplicationPartsAssemblyInfo.cs
+P:\asp\asp-net-main\asp-net-main\CMS.Backend\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
+P:\asp\asp-net-main\asp-net-main\CMS.Backend\bin\Debug\net8.0\MailKit.dll
+P:\asp\asp-net-main\asp-net-main\CMS.Backend\bin\Debug\net8.0\MimeKit.dll
+P:\asp\asp-net-main\asp-net-main\CMS.Backend\bin\Debug\net8.0\System.Security.Cryptography.Pkcs.dll
+P:\asp\asp-net-main\asp-net-main\CMS.Backend\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll
+P:\asp\asp-net-main\asp-net-main\CMS.Backend\bin\Debug\net8.0\BCrypt-Net-Next.dll
+P:\asp\asp-net-main\asp-net-main\CMS.Backend\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

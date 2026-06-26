@@ -1,4 +1,4 @@
-﻿//Sinh viên : Phạm Văn Quỳnh Phúc
+//Sinh viên : Phạm Văn Quỳnh Phúc
 //MSSV:2123110202
 //Lớp:CCQ2311F
 //Ngày tạo: 15/05/2026
@@ -36,6 +36,8 @@ namespace CMS.Data.Entities
 
         [ForeignKey("CategoryProductId")]
         public virtual CategoryProduct? CategoryProduct { get; set; }
+
+        public bool IsDeleted { get; set; } = false;
     }
 
 }
